@@ -92,3 +92,61 @@ function login() {
       document.getElementById("error").innerText = error.message;
     });
 }
+function activateKey() {
+  const key = document.getElementById("licenceKey").value.trim();
+  const errorBox = document.getElementById("error");
+
+  if (!key) {
+    errorBox.style.color = "red";
+    errorBox.innerText = "Please enter a licence key.";
+    return;
+  }
+
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    errorBox.style.color = "red";
+    errorBox.innerText = "You must be logged in to activate.";
+    return;
+  }
+
+  db.collection("licenceKeys").doc(key).get()
+    .then(doc => {
+      if (!doc.exists) {
+        errorBox.style.color = "red";
+        errorBox.innerText = "Invalid licence key.";
+        return;
+      }
+
+      const data = doc.data();
+
+      if (!data.valid) {
+        errorBox.style.color = "red";
+        errorBox.innerText = "This licence key has been disabled.";
+        return;
+      }
+
+      if (data.usedBy) {
+        errorBox.style.color = "red";
+        errorBox.innerText = "This licence key has already been used.";
+        return;
+      }
+
+      // Mark key as used
+      db.collection("licenceKeys").doc(key).update({
+        usedBy: user.uid,
+        usedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      // Mark user as activated
+      db.collection("users").doc(user.uid).set({
+        activated: true,
+        licenceKey: key
+      }, { merge: true });
+
+      window.location.href = "dashboard.html";
+    })
+    .catch(err => {
+      errorBox.style.color = "red";
+      errorBox.innerText = "Activation failed. Try again.";
+    });
+}
