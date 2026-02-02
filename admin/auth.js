@@ -1,5 +1,5 @@
 function activateKey() {
-  const key = document.getElementById("licenceKey").value;
+  const key = document.getElementById("licenceKey").value.trim();
   const user = auth.currentUser;
 
   if (!key) {
@@ -7,46 +7,53 @@ function activateKey() {
     return;
   }
 
-  // Check if licence key exists
-  db.collection("licenceKeys").doc(key).get().then(doc => {
-    if (!doc.exists) {
-      document.getElementById("error").innerText = "Invalid licence key";
-      return;
-    }
+  // Search for the licence key by field, not doc ID
+  db.collection("licenceKeys")
+    .where("keyValue", "==", key)
+    .get()
+    .then(snapshot => {
 
-    const data = doc.data();
+      if (snapshot.empty) {
+        document.getElementById("error").innerText = "Invalid licence key";
+        return;
+      }
 
-    // Check if already used
-    if (data.isUsed) {
-      document.getElementById("error").innerText = "This key has already been used";
-      return;
-    }
+      const doc = snapshot.docs[0];
+      const data = doc.data();
 
-    // Check expiry
-    const now = new Date();
-    const expiry = new Date(data.expiryDate);
+      // Check if already used
+      if (data.isUsed) {
+        document.getElementById("error").innerText = "This key has already been used";
+        return;
+      }
 
-    if (now > expiry) {
-      document.getElementById("error").innerText = "This licence key has expired";
-      return;
-    }
+      // Check expiry
+      const now = new Date();
+      const expiry = new Date(data.expiryDate);
 
-    // Link user to station
-    db.collection("users").doc(user.uid).set({
-      email: user.email,
-      stationID: data.stationID,
-      licenceKeyUsed: key,
-      firstLoginComplete: true
-    }, { merge: true });
+      if (now > expiry) {
+        document.getElementById("error").innerText = "This licence key has expired";
+        return;
+      }
 
-    // Mark key as used
-    db.collection("licenceKeys").doc(key).update({
-      isUsed: true,
-      usedByUserID: user.uid
+      // Link user to station
+      db.collection("users").doc(user.uid).set({
+        email: user.email,
+        stationID: data.stationID,
+        licenceKeyUsed: key,
+        firstLoginComplete: true
+      }, { merge: true });
+
+      // Mark key as used
+      db.collection("licenceKeys").doc(doc.id).update({
+        isUsed: true,
+        usedByUserID: user.uid
+      });
+
+      // Redirect to dashboard
+      window.location.href = "dashboard.html";
+    })
+    .catch(error => {
+      document.getElementById("error").innerText = error.message;
     });
-
-    // Redirect to dashboard
-    window.location.href = "dashboard.html";
-
-  });
 }
