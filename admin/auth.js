@@ -62,3 +62,22 @@ function logout() {
     window.location.href = "login.html";
   });
 }
+function resetPassword() {
+  const email = document.getElementById("email").value;
+
+  if (!email) {
+    document.getElementById("error").style.color = "red";
+    document.getElementById("error").innerText = "Enter your email first.";
+    return;
+  }
+
+  firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      document.getElementById("error").style.color = "green";
+      document.getElementById("error").innerText = "Password reset email sent.";
+    })
+    .catch(error => {
+      document.getElementById("error").style.color = "red";
+      document.getElementById("error").innerText = error.message;
+    });
+}
