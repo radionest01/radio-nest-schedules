@@ -1,1 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Radio Nest Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
+<div id="navbar">
+  <h2>Radio Nest</h2>
+  <button onclick="logout()">Logout</button>
+</div>
+
+<div id="tabs">
+  <button class="tab" onclick="showTab('schedule')">Schedule</button>
+  <button class="tab" onclick="showTab('hosts')">Hosts</button>
+  <button class="tab" onclick="showTab('branding')">Branding</button>
+  <button class="tab" onclick="showTab('embed')">Embed Code</button>
+  <button class="tab" onclick="showTab('account')">Account</button>
+</div>
+
+<div id="content">
+
+  <div id="schedule" class="tabContent">
+    <h3>Schedule</h3>
+    <p>Schedule editor will go here.</p>
+  </div>
+
+  <div id="hosts" class="tabContent" style="display:none;">
+    <h3>Hosts</h3>
+    <p>Host management will go here.</p>
+  </div>
+
+  <div id="branding" class="tabContent" style="display:none;">
+    <h3>Branding</h3>
+    <p>Branding settings will go here.</p>
+  </div>
+
+  <div id="embed" class="tabContent" style="display:none;">
+    <h3>Embed Code</h3>
+    <p>Embed generator will go here.</p>
+  </div>
+
+  <div id="account" class="tabContent" style="display:none;">
+    <h3>Account</h3>
+    <p>Account details will go here.</p>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+// Tab switching
+function showTab(tabName) {
+  document.querySelectorAll('.tabContent').forEach(div => div.style.display = 'none');
+  document.getElementById(tabName).style.display = 'block';
+}
+
+// Protect dashboard
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  db.collection("users").doc(user.uid).get().then(doc => {
+    if (!doc.exists || !doc.data().firstLoginComplete) {
+      window.location.href = "licence.html";
+    }
+  });
+});
+</script>
+
+</body>
+</html>
