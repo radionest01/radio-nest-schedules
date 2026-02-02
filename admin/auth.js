@@ -71,13 +71,14 @@ function resetPassword() {
     return;
   }
 
-  firebase.auth().sendPasswordResetEmail(email)
-    .then(() => {
-      document.getElementById("error").style.color = "green";
-      document.getElementById("error").innerText = "Password reset email sent.";
-    })
-    .catch(error => {
-      document.getElementById("error").style.color = "red";
-      document.getElementById("error").innerText = error.message;
-    });
+firebase.auth().sendPasswordResetEmail(email)
+  .then(() => {
+    document.getElementById("error").style.color = "green";
+    document.getElementById("error").innerText =
+      "Password reset email sent. If you can't find it, please check your spam or junk folder.";
+  })
+  .catch(error => {
+    document.getElementById("error").style.color = "red";
+    document.getElementById("error").innerText = error.message;
+  });
 }
