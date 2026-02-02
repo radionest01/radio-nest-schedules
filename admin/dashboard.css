@@ -352,3 +352,48 @@ body {
   align-items: center;
   justify-content: center;
 }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: var(--rn-surface);
+  border-radius: var(--rn-radius-lg);
+  border: 1px solid var(--rn-border);
+  box-shadow: var(--rn-shadow-soft);
+  padding: 18px 20px 16px;
+  width: 360px;
+}
+
+.modal h3 {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.modal-actions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.btn-secondary {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: var(--rn-text-main);
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
