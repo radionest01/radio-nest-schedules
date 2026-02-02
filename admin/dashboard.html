@@ -1,337 +1,1070 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Nest Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Radio Nest – Dashboard</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background: #0f0f0f;
-            color: white;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+  <style>
+    :root {
+      --bg-main: #050509;
+      --bg-elevated: #0b0c12;
+      --bg-card: #11131b;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --accent: #ff7b1a;
+      --accent-soft: rgba(255, 123, 26, 0.12);
+      --accent-strong: #ff8f3c;
+      --danger: #f97373;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+      --radius-sm: 8px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
+    }
 
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border-right: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .sidebar h2 {
-            font-size: 22px;
-            margin-bottom: 30px;
-            font-weight: 600;
-        }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
+      color: var(--text-main);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .sidebar button {
-            background: none;
-            border: none;
-            color: white;
-            padding: 12px 0;
-            text-align: left;
-            font-size: 16px;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: 0.2s;
-        }
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: linear-gradient(180deg, #020617 0%, #020617 40%, #020617 100%);
+      border-right: 1px solid var(--border-subtle);
+      padding: 22px 18px;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .sidebar button:hover {
-            opacity: 1;
-        }
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
 
-        /* Main Content */
-        .main {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-        }
+    .logo-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #fed7aa 0, #fb923c 35%, #7c2d12 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: #111827;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+    }
 
-        .header {
-            font-size: 26px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
+    .sidebar-title {
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* Schedule Grid */
-        .schedule-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 12px;
-        }
+    .sidebar-title span:first-child {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
 
-        .day-column {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 15px;
-            border-radius: 10px;
-            min-height: 200px;
-        }
+    .sidebar-title span:last-child {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
 
-        .day-column h3 {
-            margin-top: 0;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+    .nav-section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      margin-top: 4px;
+    }
 
-        .show-card {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
 
-        .show-card:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
+    .nav-item {
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.08s ease;
+    }
 
-        /* Add Show Button */
-        .add-show-btn {
-            margin-top: 20px;
-            padding: 12px 18px;
-            background: #ff7b00;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            color: white;
-            font-weight: 600;
-            transition: 0.2s;
-        }
+    .nav-item span.icon {
+      width: 18px;
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
-        .add-show-btn:hover {
-            background: #ff8f26;
-        }
+    .nav-item.active {
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      border-color: rgba(255, 123, 26, 0.4);
+      transform: translateY(-1px);
+    }
 
-        /* Modal */
-        .modal-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-        }
+    .nav-item:hover:not(.active) {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      border-color: rgba(148, 163, 184, 0.35);
+    }
 
-        .modal {
-            background: #1a1a1a;
-            padding: 25px;
-            border-radius: 12px;
-            width: 420px;
-        }
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
 
-        .modal h2 {
-            margin-top: 0;
-            font-size: 22px;
-        }
+    .sidebar-footer strong {
+      color: var(--text-main);
+      font-weight: 500;
+    }
 
-        .modal input, .modal select, .modal textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 8px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: none;
-            background: rgba(255,255,255,0.08);
-            color: white;
-        }
+    /* Main layout */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px 26px;
+      overflow: hidden;
+    }
 
-        .modal button {
-            width: 100%;
-            padding: 12px;
-            background: #ff7b00;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            color: white;
-            font-weight: 600;
-        }
-    </style>
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .topbar-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .topbar-title {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+    }
+
+    .topbar-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .pill.accent {
+      border-color: rgba(255, 123, 26, 0.6);
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #1f2937, #020617);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Content area */
+    .content {
+      flex: 1;
+      display: flex;
+      gap: 18px;
+      overflow: hidden;
+    }
+
+    .content-main {
+      flex: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .content-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 260px;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      padding: 16px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+
+    .badge.accent {
+      border-color: rgba(255, 123, 26, 0.6);
+      color: var(--accent-strong);
+      background: var(--accent-soft);
+    }
+
+    /* Add show button */
+    .btn-primary {
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      color: #111827;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 25px rgba(248, 113, 22, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.12s ease, filter 0.12s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 30px rgba(248, 113, 22, 0.45);
+    }
+
+    .btn-primary span.icon {
+      font-size: 16px;
+    }
+
+    /* Schedule grid */
+    .schedule-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 8px;
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .day-column {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), #020617);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .day-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .day-name {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .day-count {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .show-card {
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      padding: 7px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      cursor: pointer;
+      transition: border-color 0.12s ease, background 0.12s ease, transform 0.08s ease;
+    }
+
+    .show-card:hover {
+      border-color: rgba(248, 113, 22, 0.7);
+      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.35), #020617);
+      transform: translateY(-1px);
+    }
+
+    .show-title {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .show-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .show-host {
+      font-size: 11px;
+      color: rgba(249, 250, 251, 0.9);
+    }
+
+    /* Side cards */
+    .metric-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .metric {
+      flex: 1;
+      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      padding: 10px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .metric-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+    }
+
+    .modal {
+      width: 420px;
+      max-width: 92vw;
+      background: radial-gradient(circle at top left, #020617, #020617);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
+      padding: 18px 18px 16px;
+      position: relative;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .modal-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .modal-close {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 999px;
+      transition: background 0.12s ease, color 0.12s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
+    .field-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .field-row > div {
+      flex: 1;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border-radius: 9px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-main);
+      padding: 8px 9px;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: rgba(248, 113, 22, 0.8);
+      box-shadow: 0 0 0 1px rgba(248, 113, 22, 0.5);
+      background: rgba(15, 23, 42, 1);
+    }
+
+    .textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 140px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(15, 23, 42, 1);
+      border-color: rgba(148, 163, 184, 0.6);
+      color: var(--text-main);
+    }
+
+    .btn-primary-wide {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(31, 41, 55, 0.9);
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(55, 65, 81, 0.9);
+    }
+
+    @media (max-width: 1024px) {
+      .content {
+        flex-direction: column;
+      }
+      .content-side {
+        min-width: 100%;
+      }
+      .schedule-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        overflow-x: auto;
+      }
+      .sidebar-header {
+        margin-bottom: 0;
+        margin-right: 16px;
+      }
+      .nav-section-label {
+        display: none;
+      }
+      .nav-list {
+        flex-direction: row;
+        margin-bottom: 0;
+      }
+      .main {
+        padding: 14px 14px 18px;
+      }
+      .schedule-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
 </head>
 
 <body>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>Radio Nest</h2>
-        <button>Dashboard</button>
-        <button>Hosts</button>
-        <button>Branding</button>
-        <button>Embed</button>
-        <button>Account</button>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-circle">RN</div>
+      <div class="sidebar-title">
+        <span>Radio Nest</span>
+        <span>Schedules</span>
+      </div>
     </div>
 
-    <!-- Main -->
-    <div class="main">
-        <div class="header">Schedule</div>
-
-        <button class="add-show-btn" onclick="openModal()">Add Show</button>
-
-        <div class="schedule-grid" id="scheduleGrid"></div>
+    <div class="nav-section-label">Navigation</div>
+    <div class="nav-list">
+      <div class="nav-item active">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-item">
+        <span class="icon">🎙️</span>
+        <span>Hosts</span>
+      </div>
+      <div class="nav-item">
+        <span class="icon">🎨</span>
+        <span>Branding</span>
+      </div>
+      <div class="nav-item">
+        <span class="icon">🔗</span>
+        <span>Embed</span>
+      </div>
+      <div class="nav-item">
+        <span class="icon">⚙️</span>
+        <span>Account</span>
+      </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal-bg" id="modalBg">
-        <div class="modal">
-            <h2>Add Show</h2>
+    <div class="sidebar-footer">
+      <span>Signed in as</span>
+      <strong id="sidebarUserEmail">Loading…</strong>
+      <span id="sidebarStationLabel">Station: —</span>
+    </div>
+  </aside>
 
-            <input id="showTitle" placeholder="Show Title">
-
-            <select id="showDay">
-                <option value="0">Monday</option>
-                <option value="1">Tuesday</option>
-                <option value="2">Wednesday</option>
-                <option value="3">Thursday</option>
-                <option value="4">Friday</option>
-                <option value="5">Saturday</option>
-                <option value="6">Sunday</option>
-            </select>
-
-            <input id="showStart" type="time">
-            <input id="showEnd" type="time">
-
-            <select id="hostSelect"></select>
-
-            <textarea id="showDescription" placeholder="Description"></textarea>
-
-            <button onclick="saveShow()">Save Show</button>
+  <!-- Main -->
+  <main class="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title">Schedule</div>
+        <div class="topbar-subtitle" id="topbarSubtitle">
+          Curate your on‑air lineup for the week.
         </div>
+      </div>
+      <div class="topbar-right">
+        <div class="pill" id="pillShowsCount">0 shows</div>
+        <div class="pill accent" id="pillStationName">Station: —</div>
+        <div class="user-avatar"></div>
+      </div>
     </div>
 
-    <!-- Firebase -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    <!-- Content -->
+    <div class="content">
+      <!-- Main schedule -->
+      <section class="content-main">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Weekly grid</div>
+              <div class="card-subtitle">Click a day to review shows, or add new ones.</div>
+            </div>
+            <button class="btn-primary" onclick="openModal()">
+              <span class="icon">＋</span>
+              <span>Add show</span>
+            </button>
+          </div>
 
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_BUCKET",
-            messagingSenderId: "YOUR_SENDER",
-            appId: "YOUR_APP_ID"
-        };
+          <div class="schedule-grid" id="scheduleGrid">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+      </section>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth();
-        const db = getFirestore();
+      <!-- Side panel -->
+      <aside class="content-side">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Overview</div>
+              <div class="card-subtitle">High‑level view of this station’s schedule.</div>
+            </div>
+            <span class="badge accent">Live data</span>
+          </div>
 
-        let stationID = null;
-        let uid = null;
+          <div class="metric-row">
+            <div class="metric">
+              <div class="metric-label">Shows</div>
+              <div class="metric-value" id="metricShows">0</div>
+              <div class="metric-sub">Total scheduled this week</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">Hosts</div>
+              <div class="metric-value" id="metricHosts">0</div>
+              <div class="metric-sub">Available presenters</div>
+            </div>
+          </div>
 
-        onAuthStateChanged(auth, async (user) => {
-            if (!user) return;
+          <div class="metric-row">
+            <div class="metric">
+              <div class="metric-label">Busiest day</div>
+              <div class="metric-value" id="metricBusiestDay">—</div>
+              <div class="metric-sub">Most shows scheduled</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">First show</div>
+              <div class="metric-value" id="metricFirstShow">—</div>
+              <div class="metric-sub">Earliest start time</div>
+            </div>
+          </div>
+        </div>
 
-            uid = user.uid;
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Quick tips</div>
+              <div class="card-subtitle">Use consistent show titles and host images for a clean embed.</div>
+            </div>
+          </div>
+          <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px;">
+            <li>Keep show times aligned to 5‑minute increments.</li>
+            <li>Use high‑quality square images for hosts.</li>
+            <li>Group similar shows on the same day for clarity.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
 
-            const userRef = doc(db, "users", uid);
-            const userSnap = await getDoc(userRef);
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Add show</div>
+          <div class="modal-subtitle">Create a new scheduled show for this station.</div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
 
-            stationID = userSnap.data().stationID;
+      <div class="modal-body">
+        <div>
+          <div class="field-label">Title</div>
+          <input id="showTitle" class="input" placeholder="e.g. Late Night Drive" />
+        </div>
 
-            loadHosts();
-            loadShows();
-        });
+        <div class="field-row">
+          <div>
+            <div class="field-label">Day</div>
+            <select id="showDay" class="select">
+              <option value="0">Monday</option>
+              <option value="1">Tuesday</option>
+              <option value="2">Wednesday</option>
+              <option value="3">Thursday</option>
+              <option value="4">Friday</option>
+              <option value="5">Saturday</option>
+              <option value="6">Sunday</option>
+            </select>
+          </div>
+          <div>
+            <div class="field-label">Host</div>
+            <select id="hostSelect" class="select">
+              <!-- Filled by JS -->
+            </select>
+          </div>
+        </div>
 
-        async function loadHosts() {
-            const hostSelect = document.getElementById("hostSelect");
-            hostSelect.innerHTML = "";
+        <div class="field-row">
+          <div>
+            <div class="field-label">Start time</div>
+            <input id="showStart" type="time" class="input" />
+          </div>
+          <div>
+            <div class="field-label">End time</div>
+            <input id="showEnd" type="time" class="input" />
+          </div>
+        </div>
 
-            const hostsRef = collection(db, "users", uid, "stations", stationID, "hosts");
-            const hostsSnap = await getDocs(hostsRef);
+        <div>
+          <div class="field-label">Description</div>
+          <textarea id="showDescription" class="textarea" placeholder="Optional – what’s this show about?"></textarea>
+        </div>
+      </div>
 
-            hostsSnap.forEach(doc => {
-                const h = doc.data();
-                const opt = document.createElement("option");
-                opt.value = doc.id;
-                opt.textContent = h.name;
-                opt.dataset.image = h.imageUrl;
-                hostSelect.appendChild(opt);
-            });
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn-primary btn-primary-wide" onclick="saveShow()">
+          <span class="icon">💾</span>
+          <span>Save show</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase + Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      getDocs,
+      addDoc
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // TODO: replace with your real config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getFirestore();
+
+    let uid = null;
+    let stationID = null;
+
+    const daysLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+    // Modal controls (must be global)
+    window.openModal = function () {
+      document.getElementById("modalBackdrop").style.display = "flex";
+    };
+
+    window.closeModal = function () {
+      document.getElementById("modalBackdrop").style.display = "none";
+      clearModalFields();
+    };
+
+    function clearModalFields() {
+      document.getElementById("showTitle").value = "";
+      document.getElementById("showDay").value = "0";
+      document.getElementById("showStart").value = "";
+      document.getElementById("showEnd").value = "";
+      document.getElementById("showDescription").value = "";
+    }
+
+    // Auth + initial load
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.warn("No user signed in.");
+        return;
+      }
+
+      uid = user.uid;
+      document.getElementById("sidebarUserEmail").textContent = user.email || "Signed in";
+
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        console.error("User document not found in Firestore.");
+        return;
+      }
+
+      const userData = userSnap.data();
+      stationID = userData.stationID;
+
+      document.getElementById("sidebarStationLabel").textContent = `Station: ${stationID || "—"}`;
+      document.getElementById("pillStationName").textContent = `Station: ${stationID || "—"}`;
+
+      await loadHosts();
+      await loadShows();
+    });
+
+    async function loadHosts() {
+      const hostSelect = document.getElementById("hostSelect");
+      hostSelect.innerHTML = "";
+
+      if (!uid || !stationID) return;
+
+      const hostsRef = collection(db, "users", uid, "stations", stationID, "hosts");
+      const hostsSnap = await getDocs(hostsRef);
+
+      let hostCount = 0;
+
+      hostsSnap.forEach((docSnap) => {
+        const h = docSnap.data();
+        const opt = document.createElement("option");
+        opt.value = docSnap.id;
+        opt.textContent = h.name || "Unnamed host";
+        opt.dataset.image = h.imageUrl || "";
+        hostSelect.appendChild(opt);
+        hostCount++;
+      });
+
+      document.getElementById("metricHosts").textContent = hostCount.toString();
+
+      if (hostCount === 0) {
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.textContent = "No hosts yet";
+        hostSelect.appendChild(opt);
+      }
+    }
+
+    async function loadShows() {
+      const grid = document.getElementById("scheduleGrid");
+      grid.innerHTML = "";
+
+      // Build columns
+      const dayColumns = [];
+      for (let i = 0; i < 7; i++) {
+        const col = document.createElement("div");
+        col.className = "day-column";
+
+        const header = document.createElement("div");
+        header.className = "day-header";
+
+        const name = document.createElement("div");
+        name.className = "day-name";
+        name.textContent = daysLabels[i];
+
+        const count = document.createElement("div");
+        count.className = "day-count";
+        count.textContent = "0 shows";
+        count.dataset.dayIndex = i;
+
+        header.appendChild(name);
+        header.appendChild(count);
+        col.appendChild(header);
+
+        grid.appendChild(col);
+        dayColumns.push({ col, countEl: count, shows: [] });
+      }
+
+      if (!uid || !stationID) return;
+
+      const showsRef = collection(db, "users", uid, "stations", stationID, "shows");
+      const showsSnap = await getDocs(showsRef);
+
+      let totalShows = 0;
+      let earliestTime = null;
+
+      showsSnap.forEach((docSnap) => {
+        const show = docSnap.data();
+        const dayIndex = parseInt(show.day ?? 0, 10);
+        if (dayIndex < 0 || dayIndex > 6) return;
+
+        const card = document.createElement("div");
+        card.className = "show-card";
+
+        const titleEl = document.createElement("div");
+        titleEl.className = "show-title";
+        titleEl.textContent = show.title || "Untitled show";
+
+        const metaEl = document.createElement("div");
+        metaEl.className = "show-meta";
+        metaEl.innerHTML = `
+          <span>${show.start || "--:--"} – ${show.end || "--:--"}</span>
+          <span class="show-host">${show.hostName || "Unknown host"}</span>
+        `;
+
+        card.appendChild(titleEl);
+        card.appendChild(metaEl);
+
+        dayColumns[dayIndex].col.appendChild(card);
+        dayColumns[dayIndex].shows.push(show);
+        totalShows++;
+
+        if (show.start) {
+          if (!earliestTime || show.start < earliestTime) {
+            earliestTime = show.start;
+          }
         }
+      });
 
-        async function loadShows() {
-            const grid = document.getElementById("scheduleGrid");
-            grid.innerHTML = "";
+      // Update counts + metrics
+      let busiestDayIndex = null;
+      let busiestCount = 0;
 
-            const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+      dayColumns.forEach((d, idx) => {
+        const count = d.shows.length;
+        d.countEl.textContent = `${count} show${count === 1 ? "" : "s"}`;
 
-            for (let i = 0; i < 7; i++) {
-                const col = document.createElement("div");
-                col.className = "day-column";
-                col.innerHTML = `<h3>${days[i]}</h3>`;
-                grid.appendChild(col);
-            }
-
-            const showsRef = collection(db, "users", uid, "stations", stationID, "shows");
-            const showsSnap = await getDocs(showsRef);
-
-            showsSnap.forEach(docSnap => {
-                const show = docSnap.data();
-                const card = document.createElement("div");
-                card.className = "show-card";
-                card.innerHTML = `
-                    <strong>${show.title}</strong><br>
-                    ${show.start} - ${show.end}<br>
-                    ${show.hostName}
-                `;
-                grid.children[show.day].appendChild(card);
-            });
+        if (count > busiestCount) {
+          busiestCount = count;
+          busiestDayIndex = idx;
         }
+      });
 
-        function openModal() {
-            document.getElementById("modalBg").style.display = "flex";
-        }
+      document.getElementById("metricShows").textContent = totalShows.toString();
+      document.getElementById("pillShowsCount").textContent = `${totalShows} show${totalShows === 1 ? "" : "s"}`;
 
-        function closeModal() {
-            document.getElementById("modalBg").style.display = "none";
-        }
+      document.getElementById("metricBusiestDay").textContent =
+        busiestDayIndex !== null ? daysLabels[busiestDayIndex] : "—";
 
-        async function saveShow() {
-            const title = document.getElementById("showTitle").value;
-            const day = parseInt(document.getElementById("showDay").value);
-            const start = document.getElementById("showStart").value;
-            const end = document.getElementById("showEnd").value;
-            const desc = document.getElementById("showDescription").value;
+      document.getElementById("metricFirstShow").textContent = earliestTime || "—";
+    }
 
-            const hostSelect = document.getElementById("hostSelect");
-            const hostId = hostSelect.value;
-            const hostName = hostSelect.options[hostSelect.selectedIndex].textContent;
-            const hostImageUrl = hostSelect.options[hostSelect.selectedIndex].dataset.image;
+    // Save show
+    window.saveShow = async function () {
+      if (!uid || !stationID) {
+        console.error("Missing uid or stationID when saving show.");
+        return;
+      }
 
-            await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
-                title,
-                day,
-                start,
-                end,
-                description: desc,
-                hostId,
-                hostName,
-                hostImageUrl
-            });
+      const title = document.getElementById("showTitle").value.trim();
+      const day = parseInt(document.getElementById("showDay").value, 10);
+      const start = document.getElementById("showStart").value;
+      const end = document.getElementById("showEnd").value;
+      const description = document.getElementById("showDescription").value.trim();
 
-            closeModal();
-            loadShows();
-        }
-    </script>
+      const hostSelect = document.getElementById("hostSelect");
+      const hostId = hostSelect.value;
+      const hostName = hostSelect.options[hostSelect.selectedIndex]?.textContent || "";
+      const hostImageUrl = hostSelect.options[hostSelect.selectedIndex]?.dataset.image || "";
 
+      if (!title || !start || !end || !hostId) {
+        alert("Please fill in title, times, and host.");
+        return;
+      }
+
+      await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
+        title,
+        day,
+        start,
+        end,
+        description,
+        hostId,
+        hostName,
+        hostImageUrl
+      });
+
+      closeModal();
+      await loadShows();
+    };
+  </script>
 </body>
 </html>
