@@ -183,10 +183,50 @@
 <div id="showModal" class="modal-backdrop" style="display:none;">
   <div class="modal">
     <h3>Add Show</h3>
-    <p class="placeholder">Form fields will go here (title, day, time, host, etc.).</p>
+
+    <div class="form-group">
+      <label>Show Title</label>
+      <input type="text" id="showTitle" placeholder="e.g. Breakfast Show">
+    </div>
+
+    <div class="form-group">
+      <label>Day of Week</label>
+      <select id="showDay">
+        <option value="0">Monday</option>
+        <option value="1">Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+        <option value="5">Saturday</option>
+        <option value="6">Sunday</option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Start Time</label>
+        <input type="time" id="showStart">
+      </div>
+
+      <div class="form-group">
+        <label>End Time</label>
+        <input type="time" id="showEnd">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Host</label>
+      <input type="text" id="showHost" placeholder="e.g. Ryan, Sarah, DJ Mike">
+    </div>
+
+    <div class="form-group">
+      <label>Description (optional)</label>
+      <textarea id="showDescription" placeholder="Short description of the show"></textarea>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-secondary" onclick="closeShowModal()">Cancel</button>
-      <button class="btn-primary">Save Show</button>
+      <button class="btn-primary" onclick="saveShow()">Save Show</button>
     </div>
   </div>
 </div>
@@ -232,6 +272,32 @@ function openShowModal() {
 
 function closeShowModal() {
   document.getElementById('showModal').style.display = 'none';
+}
+
+// SAVE SHOW (FORM ONLY FOR NOW)
+function saveShow() {
+  const title = document.getElementById("showTitle").value.trim();
+  const day = document.getElementById("showDay").value;
+  const start = document.getElementById("showStart").value;
+  const end = document.getElementById("showEnd").value;
+  const host = document.getElementById("showHost").value.trim();
+  const description = document.getElementById("showDescription").value.trim();
+
+  if (!title || !start || !end || !host) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+
+  console.log({
+    title,
+    day,
+    start,
+    end,
+    host,
+    description
+  });
+
+  closeShowModal();
 }
 
 // FIREBASE AUTH PROTECTION
