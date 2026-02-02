@@ -1,97 +1,80 @@
-function activateKey() {
-  const key = document.getElementById("licenceKey").value.trim();
-  const user = auth.currentUser;
-
-  if (!key) {
-    document.getElementById("error").innerText = "Enter a licence key";
-    return;
-  }
-
-  db.collection("licenceKeys")
-    .where("keyValue", "==", key)
-    .get()
-    .then(snapshot => {
-
-      if (snapshot.empty) {
-        document.getElementById("error").innerText = "Invalid licence key";
-        return;
-      }
-
-      const doc = snapshot.docs[0];
-      const data = doc.data();
-
-      if (data.isUsed) {
-        document.getElementById("error").innerText = "This key has already been used";
-        return;
-      }
-
-      const now = new Date();
-      const expiry = new Date(data.expiryDate);
-
-      if (now > expiry) {
-        document.getElementById("error").innerText = "This licence key has expired";
-        return;
-      }
-
-      db.collection("users").doc(user.uid).set({
-        email: user.email,
-        stationID: data.stationID,
-        licenceKeyUsed: key,
-        firstLoginComplete: true
-      }, { merge: true });
-
-      db.collection("licenceKeys").doc(doc.id).update({
-        isUsed: true,
-        usedByUserID: user.uid
-      });
-
-      window.location.href = "dashboard.html";
-    })
-    .catch(error => {
-      document.getElementById("error").innerText = error.message;
-    });
-}
-
-function logout() {
-  auth.signOut().then(() => {
-    window.location.href = "login.html";
-  });
-}
-
-function resetPassword() {
-  const email = document.getElementById("email").value;
-
-  if (!email) {
-    document.getElementById("error").style.color = "red";
-    document.getElementById("error").innerText = "Enter your email first.";
-    return;
-  }
-
-  firebase.auth().sendPasswordResetEmail(email)
-    .then(() => {
-      document.getElementById("error").style.color = "green";
-      document.getElementById("error").innerText =
-        "Password reset email sent. If you can't find it, please check your spam or junk folder.";
-    })
-    .catch(error => {
-      document.getElementById("error").style.color = "red";
-      document.getElementById("error").innerText = error.message;
-    });
-}
-
+// -----------------------------
+// LOGIN
+// -----------------------------
 function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const errorBox = document.getElementById("error");
+
+  errorBox.innerText = "";
+  errorBox.style.color = "red";
 
   firebase.auth().signInWithEmailAndPassword(email, password)
     .then(() => {
       window.location.href = "activate.html";
     })
     .catch(error => {
-      document.getElementById("error").style.color = "red";
-      document.getElementById("error").innerText = error.message;
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorBox.innerText = "Incorrect password. Please try again.";
+          break;
+        case "auth/user-not-found":
+          errorBox.innerText = "No account found with that email.";
+          break;
+        case "auth/invalid-email":
+          errorBox.innerText = "Please enter a valid email address.";
+          break;
+        case "auth/too-many-requests":
+          errorBox.innerText = "Too many attempts. Please wait and try again.";
+          break;
+        default:
+          errorBox.innerText = "Login failed. Please check your details.";
+      }
     });
 }
+
+
+
+// -----------------------------
+// PASSWORD RESET
+// -----------------------------
+function resetPassword() {
+  const email = document.getElementById("email").value.trim();
+  const errorBox = document.getElementById("error");
+
+  if (!email) {
+    errorBox.style.color = "red";
+    errorBox.innerText = "Enter your email first.";
+    return;
+  }
+
+  firebase.auth().sendPasswordResetEmail(email)
+    .then(() => {
+      errorBox.style.color = "green";
+      errorBox.innerText = "Password reset email sent. Check your spam folder if needed.";
+    })
+    .catch(() => {
+      errorBox.style.color = "red";
+      errorBox.innerText = "Unable to send reset email.";
+    });
+}
+
+
+
+// -----------------------------
+// LOGOUT
+// -----------------------------
+function logout() {
+  firebase.auth().signOut().then(() => {
+    window.location.href = "login.html";
+  });
+}
+
+
+
+// -----------------------------
+// LICENCE KEY ACTIVATION (Option A)
+// -----------------------------
 function activateKey() {
   const key = document.getElementById("licenceKey").value.trim();
   const errorBox = document.getElementById("error");
@@ -109,6 +92,7 @@ function activateKey() {
     return;
   }
 
+  // Look up the licence key by document ID
   db.collection("licenceKeys").doc(key).get()
     .then(doc => {
       if (!doc.exists) {
@@ -145,7 +129,7 @@ function activateKey() {
 
       window.location.href = "dashboard.html";
     })
-    .catch(err => {
+    .catch(() => {
       errorBox.style.color = "red";
       errorBox.innerText = "Activation failed. Try again.";
     });
