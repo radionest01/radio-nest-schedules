@@ -71,6 +71,22 @@ function resetPassword() {
     return;
   }
 
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      // Redirect to licence key page or dashboard
+      window.location.href = "activate.html"; 
+      // or "dashboard.html" depending on your flow
+    })
+    .catch(error => {
+      document.getElementById("error").style.color = "red";
+      document.getElementById("error").innerText = error.message;
+    });
+}
+  
 firebase.auth().sendPasswordResetEmail(email)
   .then(() => {
     document.getElementById("error").style.color = "green";
