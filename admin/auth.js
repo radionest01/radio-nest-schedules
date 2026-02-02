@@ -7,7 +7,6 @@ function activateKey() {
     return;
   }
 
-  // Search for the licence key by field, not doc ID
   db.collection("licenceKeys")
     .where("keyValue", "==", key)
     .get()
@@ -21,13 +20,11 @@ function activateKey() {
       const doc = snapshot.docs[0];
       const data = doc.data();
 
-      // Check if already used
       if (data.isUsed) {
         document.getElementById("error").innerText = "This key has already been used";
         return;
       }
 
-      // Check expiry
       const now = new Date();
       const expiry = new Date(data.expiryDate);
 
@@ -36,7 +33,6 @@ function activateKey() {
         return;
       }
 
-      // Link user to station
       db.collection("users").doc(user.uid).set({
         email: user.email,
         stationID: data.stationID,
@@ -44,24 +40,24 @@ function activateKey() {
         firstLoginComplete: true
       }, { merge: true });
 
-      // Mark key as used
       db.collection("licenceKeys").doc(doc.id).update({
         isUsed: true,
         usedByUserID: user.uid
       });
 
-      // Redirect to dashboard
       window.location.href = "dashboard.html";
     })
     .catch(error => {
       document.getElementById("error").innerText = error.message;
     });
 }
+
 function logout() {
   auth.signOut().then(() => {
     window.location.href = "login.html";
   });
 }
+
 function resetPassword() {
   const email = document.getElementById("email").value;
 
@@ -71,30 +67,28 @@ function resetPassword() {
     return;
   }
 
-function login() {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  firebase.auth().signInWithEmailAndPassword(email, password)
+  firebase.auth().sendPasswordResetEmail(email)
     .then(() => {
-      // Redirect to licence key page or dashboard
-      window.location.href = "activate.html"; 
-      // or "dashboard.html" depending on your flow
+      document.getElementById("error").style.color = "green";
+      document.getElementById("error").innerText =
+        "Password reset email sent. If you can't find it, please check your spam or junk folder.";
     })
     .catch(error => {
       document.getElementById("error").style.color = "red";
       document.getElementById("error").innerText = error.message;
     });
 }
-  
-firebase.auth().sendPasswordResetEmail(email)
-  .then(() => {
-    document.getElementById("error").style.color = "green";
-    document.getElementById("error").innerText =
-      "Password reset email sent. If you can't find it, please check your spam or junk folder.";
-  })
-  .catch(error => {
-    document.getElementById("error").style.color = "red";
-    document.getElementById("error").innerText = error.message;
-  });
+
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      window.location.href = "activate.html";
+    })
+    .catch(error => {
+      document.getElementById("error").style.color = "red";
+      document.getElementById("error").innerText = error.message;
+    });
 }
