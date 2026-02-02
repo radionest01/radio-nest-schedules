@@ -397,3 +397,50 @@ body {
 .btn-secondary:hover {
   background: rgba(255, 255, 255, 0.06);
 }
+/* Modal form styling */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+.form-group label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--rn-text-muted);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: var(--rn-text-main);
+  font-size: 14px;
+  outline: none;
+  transition: 0.18s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--rn-accent);
+  box-shadow: 0 0 8px rgba(255, 106, 0, 0.4);
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+}
+
+.modal {
+  background: var(--rn-surface);
+  border-radius: var(--rn-radius-lg);
+  border: 1px solid var(--rn-border);
+  box-shadow: var(--rn-shadow-soft);
+  padding: 18px 20px 16px;
+  width: 360px;
+  backdrop-filter: blur(18px);
+}
