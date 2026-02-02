@@ -3,178 +3,138 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Radio Nest – Dashboard</title>
+  <title>Radio Nest Dashboard</title>
 
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      --bg-main: #050509;
-      --bg-elevated: #0b0c12;
-      --bg-card: #11131b;
-      --border-subtle: rgba(255, 255, 255, 0.06);
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --accent: #ff7b1a;
-      --accent-soft: rgba(255, 123, 26, 0.12);
-      --accent-strong: #ff8f3c;
-      --danger: #f97373;
-      --radius-lg: 14px;
-      --radius-md: 10px;
-      --radius-sm: 8px;
-      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.55);
-    }
-
-    * {
+    /* ----------------------------------------------------------
+       RESET + BASE
+    ---------------------------------------------------------- */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
-    body {
-      margin: 0;
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at top, #111827 0, #020617 45%, #000 100%);
-      color: var(--text-main);
-      display: flex;
-      height: 100vh;
+    html, body {
+      height: 100%;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
       overflow: hidden;
     }
 
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      background: linear-gradient(180deg, #020617 0%, #020617 40%, #020617 100%);
-      border-right: 1px solid var(--border-subtle);
-      padding: 22px 18px;
-      display: flex;
-      flex-direction: column;
+    /* ----------------------------------------------------------
+       THEME VARIABLES
+       Dark mode (default) + Light mode toggle
+    ---------------------------------------------------------- */
+    :root {
+      /* Dark theme */
+      --bg: #0f0f11;
+      --bg-panel: rgba(255,255,255,0.04);
+      --bg-panel-hover: rgba(255,255,255,0.07);
+      --border: rgba(255,255,255,0.08);
+      --text: #ffffff;
+      --text-muted: #9b9b9b;
+      --accent: #ff7a1a;
+      --shadow: 0 4px 20px rgba(0,0,0,0.4);
+
+      --radius: 12px;
+      --transition: 0.2s ease;
     }
 
-    .sidebar-header {
+    body.light {
+      --bg: #f7f7f8;
+      --bg-panel: #ffffff;
+      --bg-panel-hover: #f0f0f0;
+      --border: rgba(0,0,0,0.1);
+      --text: #1a1a1a;
+      --text-muted: #555;
+      --shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    /* ----------------------------------------------------------
+       LAYOUT
+    ---------------------------------------------------------- */
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      height: 100vh;
+    }
+
+    /* ----------------------------------------------------------
+       SIDEBAR
+    ---------------------------------------------------------- */
+    .sidebar {
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .sidebar-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 28px;
+      gap: 12px;
     }
 
-    .logo-img {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      object-fit: cover;
-      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+    .sidebar-logo img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
     }
 
-    .sidebar-title {
+    .sidebar-nav {
       display: flex;
       flex-direction: column;
-    }
-
-    .sidebar-title span:first-child {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-
-    .sidebar-title span:last-child {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-    }
-
-    .nav-section-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--text-muted);
-      margin-bottom: 10px;
-      margin-top: 4px;
-    }
-
-    .nav-list {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 24px;
+      gap: 8px;
     }
 
     .nav-item {
-      border-radius: 999px;
-      padding: 9px 12px;
-      font-size: 14px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
       cursor: pointer;
-      border: 1px solid transparent;
-      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.08s ease;
+      color: var(--text-muted);
+      transition: var(--transition);
+      font-size: 15px;
     }
 
-    .nav-item span.icon {
-      width: 18px;
-      text-align: center;
-      font-size: 14px;
-      opacity: 0.9;
+    .nav-item:hover {
+      background: var(--bg-panel-hover);
+      color: var(--text);
     }
 
     .nav-item.active {
-      background: var(--accent-soft);
-      color: var(--accent-strong);
-      border-color: rgba(255, 123, 26, 0.4);
-      transform: translateY(-1px);
+      background: var(--accent);
+      color: #fff;
     }
 
-    .nav-item:hover:not(.active) {
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      border-color: rgba(148, 163, 184, 0.35);
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding-top: 16px;
-      border-top: 1px solid var(--border-subtle);
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .sidebar-footer strong {
-      color: var(--text-main);
-      font-weight: 500;
-    }
-
-    /* Main layout */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 20px 26px;
-      overflow: hidden;
-    }
-
-    /* Top bar */
+    /* ----------------------------------------------------------
+       TOPBAR
+    ---------------------------------------------------------- */
     .topbar {
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 18px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-panel);
+      box-shadow: var(--shadow);
     }
 
-    .topbar-left {
+    .topbar-titles {
       display: flex;
       flex-direction: column;
-      gap: 4px;
     }
 
     .topbar-title {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 600;
-      letter-spacing: 0.01em;
     }
 
     .topbar-subtitle {
@@ -182,1376 +142,766 @@
       color: var(--text-muted);
     }
 
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .pill {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-    }
-
-    .pill.accent {
-      border-color: rgba(255, 123, 26, 0.6);
-      color: var(--accent-strong);
-      background: var(--accent-soft);
-    }
-
-    .user-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #1f2937, #020617);
-      border: 1px solid var(--border-subtle);
-    }
-
-    /* Content area */
-    .content {
-      flex: 1;
-      display: flex;
-      gap: 18px;
-      overflow: hidden;
-    }
-
-    .content-main {
-      flex: 1.6;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .content-side {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      min-width: 260px;
-    }
-
-    .card {
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-soft);
-      padding: 16px 16px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    .card-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .badge {
-      font-size: 11px;
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
-    }
-
-    .badge.accent {
-      border-color: rgba(255, 123, 26, 0.6);
-      color: var(--accent-strong);
-      background: var(--accent-soft);
-    }
-
-    /* Buttons */
-    .btn-primary {
-      border-radius: 999px;
-      padding: 9px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      border: none;
+    .theme-toggle {
       cursor: pointer;
-      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-      color: #111827;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 10px 25px rgba(248, 113, 22, 0.35);
-      transition: transform 0.08s ease, box-shadow 0.12s ease, filter 0.12s ease;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      background: var(--bg-panel-hover);
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: var(--transition);
     }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.05);
-      box-shadow: 0 14px 30px rgba(248, 113, 22, 0.45);
+    .theme-toggle:hover {
+      background: var(--bg-panel);
     }
 
-    .btn-primary span.icon {
-      font-size: 16px;
+    /* ----------------------------------------------------------
+       MAIN CONTENT
+    ---------------------------------------------------------- */
+    .main {
+      overflow-y: auto;
+      padding: 28px;
+      display: none;
     }
 
-    .btn-secondary {
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: 13px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-muted);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    .main.active {
+      display: block;
     }
 
-    .btn-secondary:hover {
-      background: rgba(15, 23, 42, 1);
-      border-color: rgba(148, 163, 184, 0.6);
-      color: var(--text-main);
-    }
-
-    .btn-danger {
-      border-radius: 999px;
-      padding: 7px 11px;
-      font-size: 12px;
-      border: 1px solid rgba(248, 113, 113, 0.7);
-      background: rgba(127, 29, 29, 0.7);
-      color: #fecaca;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
-    }
-
-    .btn-danger:hover {
-      background: rgba(153, 27, 27, 0.9);
-      border-color: rgba(248, 113, 113, 1);
-      color: #fee2e2;
-    }
-
-    .btn-primary-wide {
-      flex: 1;
-      justify-content: center;
-    }
-
-    /* Schedule grid */
+    /* ----------------------------------------------------------
+       SCHEDULE GRID
+    ---------------------------------------------------------- */
     .schedule-grid {
       display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      gap: 8px;
-      max-height: calc(100vh - 220px);
-      overflow-y: auto;
-      padding-right: 4px;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 16px;
     }
 
     .day-column {
-      background: linear-gradient(180deg, rgba(15, 23, 42, 0.9), #020617);
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 12px;
     }
 
     .day-header {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      margin-bottom: 4px;
-    }
-
-    .day-name {
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .day-count {
-      font-size: 11px;
-      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 8px;
     }
 
     .show-card {
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
-      border-radius: var(--radius-sm);
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      padding: 7px 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      cursor: pointer;
-      transition: border-color 0.12s ease, background 0.12s ease, transform 0.08s ease;
-    }
-
-    .show-card:hover {
-      border-color: rgba(248, 113, 22, 0.7);
-      background: radial-gradient(circle at top left, rgba(30, 64, 175, 0.35), #020617);
-      transform: translateY(-1px);
+      background: var(--bg-panel-hover);
+      border-radius: var(--radius);
+      padding: 12px;
+      border: 1px solid var(--border);
     }
 
     .show-title {
-      font-size: 12px;
-      font-weight: 500;
+      font-weight: 600;
+      margin-bottom: 4px;
     }
 
     .show-meta {
-      font-size: 11px;
-      color: var(--text-muted);
-      display: flex;
-      justify-content: space-between;
-    }
-
-    .show-host {
-      font-size: 11px;
-      color: rgba(249, 250, 251, 0.9);
-    }
-
-    /* Side cards */
-    .metric-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .metric {
-      flex: 1;
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-      padding: 10px 11px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .metric-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .metric-value {
-      font-size: 16px;
-      font-weight: 600;
-    }
-
-    .metric-sub {
-      font-size: 11px;
+      font-size: 13px;
       color: var(--text-muted);
     }
 
-    /* Hosts grid */
+    /* ----------------------------------------------------------
+       HOST CARDS
+    ---------------------------------------------------------- */
     .hosts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 12px;
-      max-height: calc(100vh - 220px);
-      overflow-y: auto;
-      padding-right: 4px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
     }
 
     .host-card {
-      background: radial-gradient(circle at top left, rgba(15, 23, 42, 0.9), #020617);
-      border-radius: var(--radius-md);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 10px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 12px;
+      box-shadow: var(--shadow);
     }
 
     .host-header {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 12px;
     }
 
     .host-image {
-      width: 80px;
-      height: 80px;
-      border-radius: 18px;
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
       object-fit: cover;
-      background: #020617;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-    }
-
-    .host-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
     }
 
     .host-name {
-      font-size: 14px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 16px;
     }
 
     .host-bio {
-      font-size: 12px;
+      font-size: 13px;
       color: var(--text-muted);
-      max-height: 40px;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .host-footer {
       display: flex;
-      justify-content: flex-end;
-      gap: 6px;
+      gap: 8px;
     }
 
-    /* Modal */
+    /* ----------------------------------------------------------
+       BUTTONS
+    ---------------------------------------------------------- */
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: var(--bg-panel-hover);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-danger {
+      background: #d9534f;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    /* ----------------------------------------------------------
+       MODALS
+    ---------------------------------------------------------- */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.65);
+      background: rgba(0,0,0,0.6);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 40;
+      z-index: 1000;
     }
 
     .modal {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
       width: 420px;
-      max-width: 92vw;
-      background: radial-gradient(circle at top left, #020617, #020617);
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.85);
-      padding: 18px 18px 16px;
-      position: relative;
-    }
-
-    .modal-header {
+      box-shadow: var(--shadow);
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
+      flex-direction: column;
+      gap: 16px;
     }
 
     .modal-title {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: 600;
     }
 
     .modal-subtitle {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .modal-close {
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-      padding: 2px 4px;
-      border-radius: 999px;
-      transition: background 0.12s ease, color 0.12s ease;
-    }
-
-    .modal-close:hover {
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-    }
-
-    .modal-body {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
-
-    .field-label {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 2px;
-    }
-
-    .field-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .field-row > div {
-      flex: 1;
-    }
-
-    .input,
-    .select,
-    .textarea {
-      width: 100%;
-      border-radius: 9px;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      background: rgba(15, 23, 42, 0.9);
-      color: var(--text-main);
-      padding: 8px 9px;
       font-size: 13px;
-      outline: none;
-      transition: border-color 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+      color: var(--text-muted);
     }
 
-    .input:focus,
-    .select:focus,
-    .textarea:focus {
-      border-color: rgba(248, 113, 22, 0.8);
-      box-shadow: 0 0 0 1px rgba(248, 113, 22, 0.5);
-      background: rgba(15, 23, 42, 1);
+    .modal input,
+    .modal textarea,
+    .modal select {
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-panel-hover);
+      color: var(--text);
     }
 
-    .textarea {
-      resize: vertical;
-      min-height: 70px;
-      max-height: 140px;
-    }
-
-    .modal-footer {
+    .modal-actions {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .image-preview {
-      width: 80px;
-      height: 80px;
-      border-radius: 18px;
-      object-fit: cover;
-      background: #020617;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 7px;
-      height: 7px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: rgba(31, 41, 55, 0.9);
-      border-radius: 999px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(55, 65, 81, 0.9);
-    }
-
-    @media (max-width: 1024px) {
-      .content {
-        flex-direction: column;
-      }
-      .content-side {
-        min-width: 100%;
-      }
-      .schedule-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-      }
-      .hosts-grid {
-        max-height: none;
-      }
-    }
-
-    @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-      .sidebar {
-        flex-direction: row;
-        width: 100%;
-        height: auto;
-        border-right: none;
-        border-bottom: 1px solid var(--border-subtle);
-        overflow-x: auto;
-      }
-      .sidebar-header {
-        margin-bottom: 0;
-        margin-right: 16px;
-      }
-      .nav-section-label {
-        display: none;
-      }
-      .nav-list {
-        flex-direction: row;
-        margin-bottom: 0;
-      }
-      .main {
-        padding: 14px 14px 18px;
-      }
-      .schedule-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    /* View visibility */
-    .view {
-      display: none;
-    }
-    .view.active {
-      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
     }
   </style>
 </head>
+<body class="dark">
+  <div class="layout">
 
-<body>
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="sidebar-header">
-      <img src="assets/RN Updated Icon.png" class="logo-img" alt="Radio Nest Logo">
-      <div class="sidebar-title">
-        <span>Radio Nest</span>
-        <span>Schedules</span>
-      </div>
-    </div>
-
-    <div class="nav-section-label">Navigation</div>
-    <div class="nav-list">
-      <div class="nav-item active" data-tab="schedule">
-        <span class="icon">📅</span>
-        <span>Schedule</span>
-      </div>
-      <div class="nav-item" data-tab="hosts">
-        <span class="icon">🎙️</span>
-        <span>Hosts</span>
-      </div>
-      <div class="nav-item">
-        <span class="icon">🎨</span>
-        <span>Branding</span>
-      </div>
-      <div class="nav-item">
-        <span class="icon">🔗</span>
-        <span>Embed</span>
-      </div>
-      <div class="nav-item">
-        <span class="icon">⚙️</span>
-        <span>Account</span>
-      </div>
-    </div>
-
-    <div class="sidebar-footer">
-      <span>Signed in as</span>
-      <strong id="sidebarUserEmail">Loading…</strong>
-      <span id="sidebarStationLabel">Station: —</span>
-    </div>
-  </aside>
-
-  <!-- Main -->
-  <main class="main">
-    <!-- Top bar -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <div class="topbar-title" id="topbarTitle">Schedule</div>
-        <div class="topbar-subtitle" id="topbarSubtitle">
-          Curate your on‑air lineup for the week.
-        </div>
-      </div>
-      <div class="topbar-right">
-        <div class="pill" id="pillPrimaryCount">0 shows</div>
-        <div class="pill accent" id="pillStationName">Station: —</div>
-        <div class="user-avatar"></div>
-      </div>
-    </div>
-
-    <!-- Content: two views -->
-    <div class="content">
-      <!-- Schedule view -->
-      <section class="content-main view active" id="viewScheduleMain">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Weekly grid</div>
-              <div class="card-subtitle">Click a day to review shows, or add new ones.</div>
-            </div>
-            <button class="btn-primary" onclick="openShowModal()">
-              <span class="icon">＋</span>
-              <span>Add show</span>
-            </button>
-          </div>
-
-          <div class="schedule-grid" id="scheduleGrid">
-            <!-- Filled by JS -->
-          </div>
-        </div>
-      </section>
-
-      <aside class="content-side view active" id="viewScheduleSide">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Overview</div>
-              <div class="card-subtitle">High‑level view of this station’s schedule.</div>
-            </div>
-            <span class="badge accent">Live data</span>
-          </div>
-
-          <div class="metric-row">
-            <div class="metric">
-              <div class="metric-label">Shows</div>
-              <div class="metric-value" id="metricShows">0</div>
-              <div class="metric-sub">Total scheduled this week</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">Hosts</div>
-              <div class="metric-value" id="metricHosts">0</div>
-              <div class="metric-sub">Available presenters</div>
-            </div>
-          </div>
-
-          <div class="metric-row">
-            <div class="metric">
-              <div class="metric-label">Busiest day</div>
-              <div class="metric-value" id="metricBusiestDay">—</div>
-              <div class="metric-sub">Most shows scheduled</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">First show</div>
-              <div class="metric-value" id="metricFirstShow">—</div>
-              <div class="metric-sub">Earliest start time</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Quick tips</div>
-              <div class="card-subtitle">Use consistent show titles and host images for a clean embed.</div>
-            </div>
-          </div>
-          <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px;">
-            <li>Keep show times aligned to 5‑minute increments.</li>
-            <li>Use high‑quality square images for hosts.</li>
-            <li>Group similar shows on the same day for clarity.</li>
-          </ul>
-        </div>
-      </aside>
-
-      <!-- Hosts view -->
-      <section class="content-main view" id="viewHostsMain">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Hosts</div>
-              <div class="card-subtitle">Manage presenters for this station.</div>
-            </div>
-            <button class="btn-primary" onclick="openHostModal()">
-              <span class="icon">＋</span>
-              <span>Add host</span>
-            </button>
-          </div>
-
-          <div class="hosts-grid" id="hostsGrid">
-            <!-- Filled by JS -->
-          </div>
-        </div>
-      </section>
-
-      <aside class="content-side view" id="viewHostsSide">
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Hosts overview</div>
-              <div class="card-subtitle">Keep your presenter list clean and up to date.</div>
-            </div>
-            <span class="badge accent">Live data</span>
-          </div>
-          <div class="metric-row">
-            <div class="metric">
-              <div class="metric-label">Total hosts</div>
-              <div class="metric-value" id="metricHostsTotal">0</div>
-              <div class="metric-sub">Active presenters</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">With bio</div>
-              <div class="metric-value" id="metricHostsWithBio">0</div>
-              <div class="metric-sub">Ready for public display</div>
-            </div>
-          </div>
-          <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
-            Use clear, consistent names and good images so your schedule and embeds feel premium and intentional.
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <!-- Show Modal -->
-  <div class="modal-backdrop" id="showModalBackdrop">
-    <div class="modal">
-      <div class="modal-header">
+    <!-- ------------------------------------------------------
+         SIDEBAR
+    ------------------------------------------------------ -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="assets/RN Updated Icon.png" alt="Radio Nest Logo">
         <div>
-          <div class="modal-title">Add show</div>
-          <div class="modal-subtitle">Create a new scheduled show for this station.</div>
-        </div>
-        <button class="modal-close" onclick="closeShowModal()">×</button>
-      </div>
-
-      <div class="modal-body">
-        <div>
-          <div class="field-label">Title</div>
-          <input id="showTitle" class="input" placeholder="e.g. Late Night Drive" />
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="field-label">Day</div>
-            <select id="showDay" class="select">
-              <option value="0">Monday</option>
-              <option value="1">Tuesday</option>
-              <option value="2">Wednesday</option>
-              <option value="3">Thursday</option>
-              <option value="4">Friday</option>
-              <option value="5">Saturday</option>
-              <option value="6">Sunday</option>
-            </select>
-          </div>
-          <div>
-            <div class="field-label">Host</div>
-            <select id="hostSelect" class="select">
-              <!-- Filled by JS -->
-            </select>
-          </div>
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="field-label">Start time</div>
-            <input id="showStart" type="time" class="input" />
-          </div>
-          <div>
-            <div class="field-label">End time</div>
-            <input id="showEnd" type="time" class="input" />
-          </div>
-        </div>
-
-        <div>
-          <div class="field-label">Description</div>
-          <textarea id="showDescription" class="textarea" placeholder="Optional – what’s this show about?"></textarea>
+          <div style="font-weight:600;">Radio Nest</div>
+          <div id="sidebarStationLabel" style="font-size:13px;color:var(--text-muted);">Station: —</div>
         </div>
       </div>
 
-      <div class="modal-footer">
-        <button class="btn-secondary" onclick="closeShowModal()">Cancel</button>
-        <button class="btn-primary btn-primary-wide" onclick="saveShow()">
-          <span class="icon">💾</span>
-          <span>Save show</span>
-        </button>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-tab="schedule">📅 Schedule</div>
+        <div class="nav-item" data-tab="hosts">🎙️ Hosts</div>
+      </nav>
+
+      <div style="margin-top:auto;font-size:13px;color:var(--text-muted);">
+        <div id="sidebarUserEmail">Signed in</div>
       </div>
+    </aside>
+
+    <!-- ------------------------------------------------------
+         MAIN AREA
+    ------------------------------------------------------ -->
+    <div style="display:flex;flex-direction:column;overflow:hidden;">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-titles">
+          <div class="topbar-title" id="topbarTitle">Schedule</div>
+          <div class="topbar-subtitle" id="topbarSubtitle">Curate your on‑air lineup for the week.</div>
+        </div>
+
+        <button class="theme-toggle" id="themeToggle">Toggle Theme</button>
+      </header>
+
+      <!-- MAIN CONTENT -->
+      <main style="flex:1;overflow-y:auto;">
+
+        <!-- --------------------------------------------------
+             SCHEDULE TAB
+        -------------------------------------------------- -->
+        <section id="viewScheduleMain" class="main active">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h2 style="font-size:18px;font-weight:600;">Weekly Schedule</h2>
+            <button class="btn-primary" onclick="openShowModal()">Add Show</button>
+          </div>
+
+          <div class="schedule-grid" id="scheduleGrid"></div>
+
+          <div style="margin-top:32px;display:flex;gap:24px;">
+            <div>
+              <div style="font-size:13px;color:var(--text-muted);">Total Shows</div>
+              <div id="metricShows" style="font-size:20px;font-weight:600;">0</div>
+            </div>
+            <div>
+              <div style="font-size:13px;color:var(--text-muted);">Busiest Day</div>
+              <div id="metricBusiestDay" style="font-size:20px;font-weight:600;">—</div>
+            </div>
+            <div>
+              <div style="font-size:13px;color:var(--text-muted);">First Show</div>
+              <div id="metricFirstShow" style="font-size:20px;font-weight:600;">—</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- --------------------------------------------------
+             HOSTS TAB
+        -------------------------------------------------- -->
+        <section id="viewHostsMain" class="main">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h2 style="font-size:18px;font-weight:600;">Hosts</h2>
+            <button class="btn-primary" onclick="openHostModal()">Add Host</button>
+          </div>
+
+          <div class="hosts-grid" id="hostsGrid"></div>
+
+          <div style="margin-top:32px;display:flex;gap:24px;">
+            <div>
+              <div style="font-size:13px;color:var(--text-muted);">Total Hosts</div>
+              <div id="metricHostsTotal" style="font-size:20px;font-weight:600;">0</div>
+            </div>
+            <div>
+              <div style="font-size:13px;color:var(--text-muted);">Hosts with Bio</div>
+              <div id="metricHostsWithBio" style="font-size:20px;font-weight:600;">0</div>
+            </div>
+          </div>
+        </section>
+
+      </main>
     </div>
   </div>
 
-  <!-- Host Modal -->
+  <!-- ------------------------------------------------------
+       MODALS
+  ------------------------------------------------------ -->
+
+  <!-- ADD / EDIT HOST MODAL -->
   <div class="modal-backdrop" id="hostModalBackdrop">
     <div class="modal">
-      <div class="modal-header">
-        <div>
-          <div class="modal-title" id="hostModalTitle">Add host</div>
-          <div class="modal-subtitle" id="hostModalSubtitle">Create a new presenter for this station.</div>
-        </div>
-        <button class="modal-close" onclick="closeHostModal()">×</button>
+      <div class="modal-title" id="hostModalTitle">Add Host</div>
+      <div class="modal-subtitle" id="hostModalSubtitle">Create a new presenter for this station.</div>
+
+      <input id="hostName" placeholder="Host name">
+      <textarea id="hostBio" placeholder="Bio" rows="3"></textarea>
+
+      <input id="hostInstagram" placeholder="Instagram">
+      <input id="hostTwitter" placeholder="Twitter">
+      <input id="hostFacebook" placeholder="Facebook">
+
+      <div>
+        <div style="font-size:13px;margin-bottom:6px;">Host Image</div>
+        <input type="file" id="hostImageInput" accept="image/*">
+        <img id="hostImagePreview" style="width:100%;margin-top:10px;border-radius:var(--radius);display:block;">
       </div>
 
-      <div class="modal-body">
-        <div class="field-row" style="align-items: center;">
-          <div>
-            <div class="field-label">Preview</div>
-            <img id="hostImagePreview" class="image-preview" alt="Host preview" />
-          </div>
-          <div>
-            <div class="field-label">Image</div>
-            <input id="hostImageInput" type="file" accept="image/*" class="input" />
-          </div>
-        </div>
-
-        <div>
-          <div class="field-label">Name</div>
-          <input id="hostName" class="input" placeholder="e.g. Ryan" />
-        </div>
-
-        <div>
-          <div class="field-label">Bio</div>
-          <textarea id="hostBio" class="textarea" placeholder="Optional – short presenter bio."></textarea>
-        </div>
-
-        <div class="field-row">
-          <div>
-            <div class="field-label">Instagram</div>
-            <input id="hostInstagram" class="input" placeholder="@handle or full URL" />
-          </div>
-          <div>
-            <div class="field-label">Twitter / X</div>
-            <input id="hostTwitter" class="input" placeholder="@handle or full URL" />
-          </div>
-        </div>
-
-        <div>
-          <div class="field-label">Facebook</div>
-          <input id="hostFacebook" class="input" placeholder="Profile or page URL" />
-        </div>
-      </div>
-
-      <div class="modal-footer">
+      <div class="modal-actions">
         <button class="btn-secondary" onclick="closeHostModal()">Cancel</button>
-        <button class="btn-primary btn-primary-wide" onclick="saveHost()">
-          <span class="icon">💾</span>
-          <span id="hostModalSaveLabel">Save host</span>
-        </button>
+        <button class="btn-primary" id="hostModalSaveLabel" onclick="saveHost()">Save Host</button>
       </div>
     </div>
   </div>
 
-  <!-- Delete Host Modal -->
+  <!-- DELETE HOST MODAL -->
   <div class="modal-backdrop" id="deleteHostModalBackdrop">
     <div class="modal">
-      <div class="modal-header">
-        <div>
-          <div class="modal-title">Remove host</div>
-          <div class="modal-subtitle">This will remove the host from this station.</div>
-        </div>
-        <button class="modal-close" onclick="closeDeleteHostModal()">×</button>
-      </div>
+      <div class="modal-title">Delete Host</div>
+      <div class="modal-subtitle" id="deleteHostMessage">Are you sure?</div>
 
-      <div class="modal-body">
-        <div style="font-size: 13px; color: var(--text-muted);" id="deleteHostMessage">
-          Are you sure you want to remove this host?
-        </div>
-      </div>
-
-      <div class="modal-footer">
+      <div class="modal-actions">
         <button class="btn-secondary" onclick="closeDeleteHostModal()">Cancel</button>
-        <button class="btn-danger" onclick="confirmDeleteHost()">
-          <span class="icon">🗑️</span>
-          <span>Delete host</span>
-        </button>
+        <button class="btn-danger" onclick="confirmDeleteHost()">Delete</button>
       </div>
     </div>
   </div>
 
-  <!-- Firebase + Logic -->
+  <!-- ADD SHOW MODAL -->
+  <div class="modal-backdrop" id="showModalBackdrop">
+    <div class="modal">
+      <div class="modal-title">Add Show</div>
+      <div class="modal-subtitle">Create a new show for the schedule.</div>
+
+      <input id="showTitle" placeholder="Show title">
+
+      <select id="showDay">
+        <option value="0">Monday</option>
+        <option value="1">Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+        <option value="5">Saturday</option>
+        <option value="6">Sunday</option>
+      </select>
+
+      <input id="showStart" type="time">
+      <input id="showEnd" type="time">
+
+      <textarea id="showDescription" placeholder="Description" rows="3"></textarea>
+
+      <select id="hostSelect"></select>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeShowModal()">Cancel</button>
+        <button class="btn-primary" onclick="saveShow()">Save Show</button>
+      </div>
+    </div>
+  </div>
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      getDoc,
-      collection,
-      getDocs,
-      addDoc,
-      updateDoc,
-      deleteDoc
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  /* ----------------------------------------------------------
+     FIREBASE IMPORTS
+  ---------------------------------------------------------- */
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    getDoc,
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // TODO: replace with your real config
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_AUTH_DOMAIN",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_STORAGE_BUCKET",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+  console.log("Dashboard script loaded.");
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
-    const db = getFirestore();
+  /* ----------------------------------------------------------
+     FIREBASE CONFIG (YOUR REAL CONFIG)
+  ---------------------------------------------------------- */
+  const firebaseConfig = {
+    apiKey: "AIzaSyBYX0zC6sNg02nhyDp36oPi-XOHQkOniro",
+    authDomain: "radio-nest-schedules.firebaseapp.com",
+    projectId: "radio-nest-schedules",
+    storageBucket: "radio-nest-schedules.firebasestorage.app",
+    messagingSenderId: "461314444975",
+    appId: "1:461314444975:web:4872e913324e789b6a4e5a"
+  };
 
-    let uid = null;
-    let stationID = null;
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getFirestore();
 
-    const daysLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  /* ----------------------------------------------------------
+     STATE
+  ---------------------------------------------------------- */
+  let uid = null;
+  let stationID = null;
 
-    // State for hosts
-    let hostsCache = [];
-    let editingHostId = null;
-    let deletingHostId = null;
+  let hostsCache = [];
+  let editingHostId = null;
+  let deletingHostId = null;
+  let hostImageBase64 = "";
 
-    // ---------- View switching ----------
-    const navItems = document.querySelectorAll(".nav-item[data-tab]");
-    const viewScheduleMain = document.getElementById("viewScheduleMain");
-    const viewScheduleSide = document.getElementById("viewScheduleSide");
-    const viewHostsMain = document.getElementById("viewHostsMain");
-    const viewHostsSide = document.getElementById("viewHostsSide");
-    const topbarTitle = document.getElementById("topbarTitle");
-    const topbarSubtitle = document.getElementById("topbarSubtitle");
-    const pillPrimaryCount = document.getElementById("pillPrimaryCount");
+  const daysLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    navItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        const tab = item.dataset.tab;
-        navItems.forEach((i) => i.classList.remove("active"));
-        item.classList.add("active");
+  /* ----------------------------------------------------------
+     THEME TOGGLE
+  ---------------------------------------------------------- */
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    document.body.classList.toggle("light");
+  });
 
-        if (tab === "schedule") {
-          // Show schedule views
-          viewScheduleMain.classList.add("active");
-          viewScheduleSide.classList.add("active");
-          viewHostsMain.classList.remove("active");
-          viewHostsSide.classList.remove("active");
+  /* ----------------------------------------------------------
+     TAB SWITCHING
+  ---------------------------------------------------------- */
+  document.querySelectorAll(".nav-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      document.querySelectorAll(".nav-item").forEach(i => i.classList.remove("active"));
+      item.classList.add("active");
 
-          topbarTitle.textContent = "Schedule";
-          topbarSubtitle.textContent = "Curate your on‑air lineup for the week.";
-          updatePrimaryPillForSchedule();
-        } else if (tab === "hosts") {
-          // Show hosts views
-          viewScheduleMain.classList.remove("active");
-          viewScheduleSide.classList.remove("active");
-          viewHostsMain.classList.add("active");
-          viewHostsSide.classList.add("active");
+      const tab = item.dataset.tab;
 
-          topbarTitle.textContent = "Hosts";
-          topbarSubtitle.textContent = "Manage presenters for this station.";
-          updatePrimaryPillForHosts();
-        }
-      });
-    });
+      document.getElementById("viewScheduleMain").classList.remove("active");
+      document.getElementById("viewHostsMain").classList.remove("active");
 
-    function updatePrimaryPillForSchedule() {
-      const totalShows = parseInt(document.getElementById("metricShows").textContent || "0", 10);
-      pillPrimaryCount.textContent = `${totalShows} show${totalShows === 1 ? "" : "s"}`;
-    }
-
-    function updatePrimaryPillForHosts() {
-      const totalHosts = hostsCache.length;
-      pillPrimaryCount.textContent = `${totalHosts} host${totalHosts === 1 ? "" : "s"}`;
-    }
-
-    // ---------- Show modal controls ----------
-    window.openShowModal = function () {
-      document.getElementById("showModalBackdrop").style.display = "flex";
-    };
-
-    window.closeShowModal = function () {
-      document.getElementById("showModalBackdrop").style.display = "none";
-      clearShowModalFields();
-    };
-
-    function clearShowModalFields() {
-      document.getElementById("showTitle").value = "";
-      document.getElementById("showDay").value = "0";
-      document.getElementById("showStart").value = "";
-      document.getElementById("showEnd").value = "";
-      document.getElementById("showDescription").value = "";
-    }
-
-    // ---------- Host modal controls ----------
-    const hostImageInput = document.getElementById("hostImageInput");
-    const hostImagePreview = document.getElementById("hostImagePreview");
-    let hostImageBase64 = "";
-
-    window.openHostModal = function (hostId = null) {
-      editingHostId = hostId;
-      document.getElementById("hostModalBackdrop").style.display = "flex";
-
-      if (hostId) {
-        const host = hostsCache.find((h) => h.id === hostId);
-        if (host) {
-          document.getElementById("hostModalTitle").textContent = "Edit host";
-          document.getElementById("hostModalSubtitle").textContent = "Update this presenter’s details.";
-          document.getElementById("hostModalSaveLabel").textContent = "Save changes";
-
-          document.getElementById("hostName").value = host.name || "";
-          document.getElementById("hostBio").value = host.bio || "";
-          document.getElementById("hostInstagram").value = host.socials?.instagram || "";
-          document.getElementById("hostTwitter").value = host.socials?.twitter || "";
-          document.getElementById("hostFacebook").value = host.socials?.facebook || "";
-          hostImageBase64 = host.imageBase64 || "";
-          hostImagePreview.src = hostImageBase64 || "";
-        }
+      if (tab === "schedule") {
+        document.getElementById("viewScheduleMain").classList.add("active");
+        document.getElementById("topbarTitle").textContent = "Schedule";
+        document.getElementById("topbarSubtitle").textContent = "Curate your on‑air lineup for the week.";
       } else {
-        document.getElementById("hostModalTitle").textContent = "Add host";
-        document.getElementById("hostModalSubtitle").textContent = "Create a new presenter for this station.";
-        document.getElementById("hostModalSaveLabel").textContent = "Save host";
-        clearHostModalFields();
+        document.getElementById("viewHostsMain").classList.add("active");
+        document.getElementById("topbarTitle").textContent = "Hosts";
+        document.getElementById("topbarSubtitle").textContent = "Manage presenters for this station.";
       }
-    };
+    });
+  });
 
-    window.closeHostModal = function () {
-      document.getElementById("hostModalBackdrop").style.display = "none";
-      clearHostModalFields();
-      editingHostId = null;
-    };
+  /* ----------------------------------------------------------
+     MODAL HELPERS
+  ---------------------------------------------------------- */
+  window.openShowModal = () => {
+    document.getElementById("showModalBackdrop").style.display = "flex";
+  };
 
-    function clearHostModalFields() {
+  window.closeShowModal = () => {
+    document.getElementById("showModalBackdrop").style.display = "none";
+    document.getElementById("showTitle").value = "";
+    document.getElementById("showDescription").value = "";
+    document.getElementById("showStart").value = "";
+    document.getElementById("showEnd").value = "";
+  };
+
+  window.openHostModal = (id = null) => {
+    editingHostId = id;
+    document.getElementById("hostModalBackdrop").style.display = "flex";
+
+    const preview = document.getElementById("hostImagePreview");
+
+    if (id) {
+      const host = hostsCache.find(h => h.id === id);
+      document.getElementById("hostModalTitle").textContent = "Edit Host";
+      document.getElementById("hostModalSubtitle").textContent = "Update this presenter’s details.";
+      document.getElementById("hostModalSaveLabel").textContent = "Save Changes";
+
+      document.getElementById("hostName").value = host.name;
+      document.getElementById("hostBio").value = host.bio;
+      document.getElementById("hostInstagram").value = host.socials.instagram || "";
+      document.getElementById("hostTwitter").value = host.socials.twitter || "";
+      document.getElementById("hostFacebook").value = host.socials.facebook || "";
+
+      hostImageBase64 = host.imageBase64 || "";
+      preview.src = hostImageBase64;
+    } else {
+      document.getElementById("hostModalTitle").textContent = "Add Host";
+      document.getElementById("hostModalSubtitle").textContent = "Create a new presenter for this station.";
+      document.getElementById("hostModalSaveLabel").textContent = "Save Host";
+
       document.getElementById("hostName").value = "";
       document.getElementById("hostBio").value = "";
       document.getElementById("hostInstagram").value = "";
       document.getElementById("hostTwitter").value = "";
       document.getElementById("hostFacebook").value = "";
       hostImageBase64 = "";
-      hostImagePreview.src = "";
-      hostImageInput.value = "";
+      preview.src = "";
+    }
+  };
+
+  window.closeHostModal = () => {
+    document.getElementById("hostModalBackdrop").style.display = "none";
+  };
+
+  window.openDeleteHostModal = (id) => {
+    deletingHostId = id;
+    const host = hostsCache.find(h => h.id === id);
+    document.getElementById("deleteHostMessage").textContent =
+      `Are you sure you want to remove “${host.name}”?`;
+    document.getElementById("deleteHostModalBackdrop").style.display = "flex";
+  };
+
+  window.closeDeleteHostModal = () => {
+    deletingHostId = null;
+    document.getElementById("deleteHostModalBackdrop").style.display = "none";
+  };
+
+  /* ----------------------------------------------------------
+     HOST IMAGE UPLOAD (BASE64)
+  ---------------------------------------------------------- */
+  document.getElementById("hostImageInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      hostImageBase64 = ev.target.result;
+      document.getElementById("hostImagePreview").src = hostImageBase64;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  /* ----------------------------------------------------------
+     SAVE HOST
+  ---------------------------------------------------------- */
+  window.saveHost = async () => {
+    if (!uid || !stationID) return;
+
+    const name = document.getElementById("hostName").value.trim();
+    if (!name) return alert("Please enter a host name.");
+
+    const payload = {
+      name,
+      bio: document.getElementById("hostBio").value.trim(),
+      imageBase64: hostImageBase64 || "",
+      socials: {
+        instagram: document.getElementById("hostInstagram").value.trim(),
+        twitter: document.getElementById("hostTwitter").value.trim(),
+        facebook: document.getElementById("hostFacebook").value.trim()
+      }
+    };
+
+    if (editingHostId) {
+      await updateDoc(doc(db, "users", uid, "stations", stationID, "hosts", editingHostId), payload);
+    } else {
+      await addDoc(collection(db, "users", uid, "stations", stationID, "hosts"), payload);
     }
 
-    hostImageInput.addEventListener("change", (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        hostImageBase64 = ev.target.result;
-        hostImagePreview.src = hostImageBase64;
-      };
-      reader.readAsDataURL(file);
+    closeHostModal();
+    loadHosts();
+  };
+
+  /* ----------------------------------------------------------
+     DELETE HOST
+  ---------------------------------------------------------- */
+  window.confirmDeleteHost = async () => {
+    if (!uid || !stationID || !deletingHostId) return;
+
+    await deleteDoc(doc(db, "users", uid, "stations", stationID, "hosts", deletingHostId));
+
+    deletingHostId = null;
+    closeDeleteHostModal();
+    loadHosts();
+  };
+
+  /* ----------------------------------------------------------
+     SAVE SHOW
+  ---------------------------------------------------------- */
+  window.saveShow = async () => {
+    if (!uid || !stationID) return;
+
+    const title = document.getElementById("showTitle").value.trim();
+    const start = document.getElementById("showStart").value;
+    const end = document.getElementById("showEnd").value;
+    const hostId = document.getElementById("hostSelect").value;
+
+    if (!title || !start || !end || !hostId) {
+      return alert("Please fill in all fields.");
+    }
+
+    const hostOption = document.getElementById("hostSelect").selectedOptions[0];
+
+    await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
+      title,
+      day: parseInt(document.getElementById("showDay").value, 10),
+      start,
+      end,
+      description: document.getElementById("showDescription").value.trim(),
+      hostId,
+      hostName: hostOption.textContent,
+      hostImageUrl: hostOption.dataset.image || ""
     });
 
-    // Delete host modal
-    window.openDeleteHostModal = function (hostId) {
-      deletingHostId = hostId;
-      const host = hostsCache.find((h) => h.id === hostId);
-      const name = host?.name || "this host";
-      document.getElementById("deleteHostMessage").textContent =
-        `Are you sure you want to remove “${name}” from this station?`;
-      document.getElementById("deleteHostModalBackdrop").style.display = "flex";
-    };
+    closeShowModal();
+    loadShows();
+  };
 
-    window.closeDeleteHostModal = function () {
-      deletingHostId = null;
-      document.getElementById("deleteHostModalBackdrop").style.display = "none";
-    };
+  /* ----------------------------------------------------------
+     LOAD HOSTS
+  ---------------------------------------------------------- */
+  async function loadHosts() {
+    const grid = document.getElementById("hostsGrid");
+    grid.innerHTML = "";
+    hostsCache = [];
 
-    window.confirmDeleteHost = async function () {
-      if (!uid || !stationID || !deletingHostId) return;
-      const hostRef = doc(db, "users", uid, "stations", stationID, "hosts", deletingHostId);
-      await deleteDoc(hostRef);
-      deletingHostId = null;
-      document.getElementById("deleteHostModalBackdrop").style.display = "none";
-      await loadHosts();
-    };
+    const snap = await getDocs(collection(db, "users", uid, "stations", stationID, "hosts"));
 
-    // ---------- Auth + initial load ----------
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.warn("No user signed in.");
-        return;
-      }
+    const hostSelect = document.getElementById("hostSelect");
+    hostSelect.innerHTML = "";
 
-      uid = user.uid;
-      document.getElementById("sidebarUserEmail").textContent = user.email || "Signed in";
+    let hostsWithBio = 0;
 
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-
-      if (!userSnap.exists()) {
-        console.error("User document not found in Firestore.");
-        return;
-      }
-
-      const userData = userSnap.data();
-      stationID = userData.stationID;
-
-      document.getElementById("sidebarStationLabel").textContent = `Station: ${stationID || "—"}`;
-      document.getElementById("pillStationName").textContent = `Station: ${stationID || "—"}`;
-
-      await loadHosts();
-      await loadShows();
-    });
-
-    // ---------- Hosts ----------
-    async function loadHosts() {
-      const hostsGrid = document.getElementById("hostsGrid");
-      hostsGrid.innerHTML = "";
-      hostsCache = [];
-
-      if (!uid || !stationID) return;
-
-      const hostsRef = collection(db, "users", uid, "stations", stationID, "hosts");
-      const hostsSnap = await getDocs(hostsRef);
-
-      let hostCount = 0;
-      let hostsWithBio = 0;
-
-      const hostSelect = document.getElementById("hostSelect");
-      hostSelect.innerHTML = "";
-
-      hostsSnap.forEach((docSnap) => {
-        const data = docSnap.data();
-        const host = {
-          id: docSnap.id,
-          name: data.name || "Unnamed host",
-          imageBase64: data.imageBase64 || "",
-          bio: data.bio || "",
-          socials: data.socials || {}
-        };
-        hostsCache.push(host);
-        hostCount++;
-        if (host.bio && host.bio.trim() !== "") hostsWithBio++;
-
-        // Host card
-        const card = document.createElement("div");
-        card.className = "host-card";
-
-        const header = document.createElement("div");
-        header.className = "host-header";
-
-        const img = document.createElement("img");
-        img.className = "host-image";
-        img.src = host.imageBase64 || "";
-        img.alt = host.name;
-
-        const info = document.createElement("div");
-        info.className = "host-info";
-
-        const nameEl = document.createElement("div");
-        nameEl.className = "host-name";
-        nameEl.textContent = host.name;
-
-        const bioEl = document.createElement("div");
-        bioEl.className = "host-bio";
-        bioEl.textContent = host.bio || "No bio yet.";
-
-        info.appendChild(nameEl);
-        info.appendChild(bioEl);
-
-        header.appendChild(img);
-        header.appendChild(info);
-
-        const footer = document.createElement("div");
-        footer.className = "host-footer";
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "btn-secondary";
-        editBtn.textContent = "Edit";
-        editBtn.onclick = () => openHostModal(host.id);
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "btn-danger";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.onclick = () => openDeleteHostModal(host.id);
-
-        footer.appendChild(editBtn);
-        footer.appendChild(deleteBtn);
-
-        card.appendChild(header);
-        card.appendChild(footer);
-        hostsGrid.appendChild(card);
-
-        // Add to show host select
-        const opt = document.createElement("option");
-        opt.value = host.id;
-        opt.textContent = host.name;
-        opt.dataset.image = host.imageBase64 || "";
-        hostSelect.appendChild(opt);
-      });
-
-      // Metrics
-      document.getElementById("metricHosts").textContent = hostCount.toString();
-      document.getElementById("metricHostsTotal").textContent = hostCount.toString();
-      document.getElementById("metricHostsWithBio").textContent = hostsWithBio.toString();
-
-      if (hostCount === 0) {
-        const opt = document.createElement("option");
-        opt.value = "";
-        opt.textContent = "No hosts yet";
-        hostSelect.appendChild(opt);
-
-        const empty = document.createElement("div");
-        empty.style.fontSize = "13px";
-        empty.style.color = "var(--text-muted)";
-        empty.textContent = "No hosts yet. Add your first presenter to get started.";
-        hostsGrid.appendChild(empty);
-      }
-
-      // Update primary pill if on hosts tab
-      const activeTab = document.querySelector(".nav-item.active")?.dataset.tab;
-      if (activeTab === "hosts") {
-        updatePrimaryPillForHosts();
-      }
-    }
-
-    window.saveHost = async function () {
-      if (!uid || !stationID) return;
-
-      const name = document.getElementById("hostName").value.trim();
-      const bio = document.getElementById("hostBio").value.trim();
-      const instagram = document.getElementById("hostInstagram").value.trim();
-      const twitter = document.getElementById("hostTwitter").value.trim();
-      const facebook = document.getElementById("hostFacebook").value.trim();
-
-      if (!name) {
-        alert("Please enter a host name.");
-        return;
-      }
-
-      const payload = {
-        name,
-        imageBase64: hostImageBase64 || "",
-        bio,
-        socials: {
-          instagram,
-          twitter,
-          facebook
-        }
+    snap.forEach((docSnap) => {
+      const data = docSnap.data();
+      const host = {
+        id: docSnap.id,
+        name: data.name,
+        bio: data.bio || "",
+        imageBase64: data.imageBase64 || "",
+        socials: data.socials || {}
       };
 
-      if (editingHostId) {
-        const hostRef = doc(db, "users", uid, "stations", stationID, "hosts", editingHostId);
-        await updateDoc(hostRef, payload);
-      } else {
-        await addDoc(collection(db, "users", uid, "stations", stationID, "hosts"), payload);
-      }
+      hostsCache.push(host);
 
-      closeHostModal();
-      await loadHosts();
-    };
+      if (host.bio.trim() !== "") hostsWithBio++;
 
-    // ---------- Shows ----------
-    async function loadShows() {
-      const grid = document.getElementById("scheduleGrid");
-      grid.innerHTML = "";
+      const card = document.createElement("div");
+      card.className = "host-card";
 
-      const dayColumns = [];
-      for (let i = 0; i < 7; i++) {
-        const col = document.createElement("div");
-        col.className = "day-column";
+      card.innerHTML = `
+        <div class="host-header">
+          <img class="host-image" src="${host.imageBase64}">
+          <div>
+            <div class="host-name">${host.name}</div>
+            <div class="host-bio">${host.bio || "No bio yet."}</div>
+          </div>
+        </div>
 
-        const header = document.createElement("div");
-        header.className = "day-header";
+        <div class="host-footer">
+          <button class="btn-secondary" onclick="openHostModal('${host.id}')">Edit</button>
+          <button class="btn-danger" onclick="openDeleteHostModal('${host.id}')">Delete</button>
+        </div>
+      `;
 
-        const name = document.createElement("div");
-        name.className = "day-name";
-        name.textContent = daysLabels[i];
+      grid.appendChild(card);
 
-        const count = document.createElement("div");
-        count.className = "day-count";
-        count.textContent = "0 shows";
-        count.dataset.dayIndex = i;
+      const opt = document.createElement("option");
+      opt.value = host.id;
+      opt.textContent = host.name;
+      opt.dataset.image = host.imageBase64;
+      hostSelect.appendChild(opt);
+    });
 
-        header.appendChild(name);
-        header.appendChild(count);
-        col.appendChild(header);
+    document.getElementById("metricHostsTotal").textContent = hostsCache.length;
+    document.getElementById("metricHostsWithBio").textContent = hostsWithBio;
+  }
 
-        grid.appendChild(col);
-        dayColumns.push({ col, countEl: count, shows: [] });
-      }
+  /* ----------------------------------------------------------
+     LOAD SHOWS
+  ---------------------------------------------------------- */
+  async function loadShows() {
+    const grid = document.getElementById("scheduleGrid");
+    grid.innerHTML = "";
 
-      if (!uid || !stationID) return;
+    const columns = [];
+    for (let i = 0; i < 7; i++) {
+      const col = document.createElement("div");
+      col.className = "day-column";
 
-      const showsRef = collection(db, "users", uid, "stations", stationID, "shows");
-      const showsSnap = await getDocs(showsRef);
+      col.innerHTML = `
+        <div class="day-header">
+          <span>${daysLabels[i]}</span>
+          <span class="day-count" data-day="${i}">0 shows</span>
+        </div>
+      `;
 
-      let totalShows = 0;
-      let earliestTime = null;
-
-      showsSnap.forEach((docSnap) => {
-        const show = docSnap.data();
-        const dayIndex = parseInt(show.day ?? 0, 10);
-        if (dayIndex < 0 || dayIndex > 6) return;
-
-        const card = document.createElement("div");
-        card.className = "show-card";
-
-        const titleEl = document.createElement("div");
-        titleEl.className = "show-title";
-        titleEl.textContent = show.title || "Untitled show";
-
-        const metaEl = document.createElement("div");
-        metaEl.className = "show-meta";
-        metaEl.innerHTML = `
-          <span>${show.start || "--:--"} – ${show.end || "--:--"}</span>
-          <span class="show-host">${show.hostName || "Unknown host"}</span>
-        `;
-
-        card.appendChild(titleEl);
-        card.appendChild(metaEl);
-
-        dayColumns[dayIndex].col.appendChild(card);
-        dayColumns[dayIndex].shows.push(show);
-        totalShows++;
-
-        if (show.start) {
-          if (!earliestTime || show.start < earliestTime) {
-            earliestTime = show.start;
-          }
-        }
-      });
-
-      let busiestDayIndex = null;
-      let busiestCount = 0;
-
-      dayColumns.forEach((d, idx) => {
-        const count = d.shows.length;
-        d.countEl.textContent = `${count} show${count === 1 ? "" : "s"}`;
-
-        if (count > busiestCount) {
-          busiestCount = count;
-          busiestDayIndex = idx;
-        }
-      });
-
-      document.getElementById("metricShows").textContent = totalShows.toString();
-      document.getElementById("metricBusiestDay").textContent =
-        busiestDayIndex !== null ? daysLabels[busiestDayIndex] : "—";
-      document.getElementById("metricFirstShow").textContent = earliestTime || "—";
-
-      // Update primary pill if on schedule tab
-      const activeTab = document.querySelector(".nav-item.active")?.dataset.tab;
-      if (activeTab === "schedule") {
-        updatePrimaryPillForSchedule();
-      }
+      grid.appendChild(col);
+      columns.push(col);
     }
 
-    window.saveShow = async function () {
-      if (!uid || !stationID) {
-        console.error("Missing uid or stationID when saving show.");
-        return;
-      }
+    const snap = await getDocs(collection(db, "users", uid, "stations", stationID, "shows"));
 
-      const title = document.getElementById("showTitle").value.trim();
-      const day = parseInt(document.getElementById("showDay").value, 10);
-      const start = document.getElementById("showStart").value;
-      const end = document.getElementById("showEnd").value;
-      const description = document.getElementById("showDescription").value.trim();
+    let totalShows = 0;
+    let earliest = null;
+    const dayCounts = Array(7).fill(0);
 
-      const hostSelect = document.getElementById("hostSelect");
-      const hostId = hostSelect.value;
-      const hostName = hostSelect.options[hostSelect.selectedIndex]?.textContent || "";
-      const hostImageUrl = hostSelect.options[hostSelect.selectedIndex]?.dataset.image || "";
+    snap.forEach((docSnap) => {
+      const show = docSnap.data();
+      const day = parseInt(show.day, 10);
 
-      if (!title || !start || !end || !hostId) {
-        alert("Please fill in title, times, and host.");
-        return;
-      }
+      const card = document.createElement("div");
+      card.className = "show-card";
 
-      await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
-        title,
-        day,
-        start,
-        end,
-        description,
-        hostId,
-        hostName,
-        hostImageUrl
-      });
+      card.innerHTML = `
+        <div class="show-title">${show.title}</div>
+        <div class="show-meta">
+          ${show.start} – ${show.end}<br>
+          <span>${show.hostName}</span>
+        </div>
+      `;
 
-      closeShowModal();
-      await loadShows();
-    };
-  </script>
+      columns[day].appendChild(card);
+
+      dayCounts[day]++;
+      totalShows++;
+
+      if (!earliest || show.start < earliest) earliest = show.start;
+    });
+
+    document.getElementById("metricShows").textContent = totalShows;
+    document.getElementById("metricFirstShow").textContent = earliest || "—";
+
+    const busiest = dayCounts.indexOf(Math.max(...dayCounts));
+    document.getElementById("metricBusiestDay").textContent =
+      busiest >= 0 ? daysLabels[busiest] : "—";
+
+    document.querySelectorAll(".day-count").forEach((el) => {
+      const d = parseInt(el.dataset.day, 10);
+      const count = dayCounts[d];
+      el.textContent = `${count} show${count === 1 ? "" : "s"}`;
+    });
+  }
+
+  /* ----------------------------------------------------------
+     AUTH + INITIAL LOAD
+  ---------------------------------------------------------- */
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+
+    uid = user.uid;
+    document.getElementById("sidebarUserEmail").textContent = user.email;
+
+    const userDoc = await getDoc(doc(db, "users", uid));
+    if (!userDoc.exists()) return;
+
+    stationID = userDoc.data().stationID;
+    document.getElementById("sidebarStationLabel").textContent = `Station: ${stationID}`;
+
+    await loadHosts();
+    await loadShows();
+  });
+</script>
 </body>
 </html>
