@@ -69,29 +69,66 @@
 
   <div class="content-shell">
 
-    <!-- Left panel: Weekly schedule -->
+    <!-- LEFT: Weekly schedule -->
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Weekly Schedule</span>
-        <span class="panel-subtitle">Your full programming grid</span>
+        <span class="panel-subtitle">Drag, edit and manage your shows</span>
       </div>
 
-      <p class="placeholder">Schedule editor UI will go here.</p>
+      <div class="schedule-toolbar">
+        <button class="btn-primary" onclick="openShowModal()">Add Show</button>
+        <span class="schedule-hint">All times in station local time.</span>
+      </div>
+
+      <div class="schedule-grid">
+        <div class="schedule-grid-header">
+          <div></div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+          <div>Sun</div>
+        </div>
+
+        <div class="schedule-grid-body">
+          <!-- Time labels -->
+          <div class="schedule-time-column">
+            <span>00:00</span>
+            <span>06:00</span>
+            <span>12:00</span>
+            <span>18:00</span>
+          </div>
+
+          <!-- Placeholder columns for now -->
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+        </div>
+      </div>
     </div>
 
-    <!-- Right panel: Upcoming shows -->
+    <!-- RIGHT: Upcoming shows -->
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Upcoming Shows</span>
         <span class="panel-subtitle">Next 7 days</span>
       </div>
 
-      <ul class="simple-list">
+      <ul class="simple-list" id="upcomingList">
         <li>No shows scheduled yet.</li>
       </ul>
     </div>
 
   </div>
+
+</div>
 
 </div>
 
