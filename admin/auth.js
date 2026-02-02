@@ -57,3 +57,8 @@ function activateKey() {
       document.getElementById("error").innerText = error.message;
     });
 }
+function logout() {
+  auth.signOut().then(() => {
+    window.location.href = "login.html";
+  });
+}
