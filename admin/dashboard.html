@@ -311,23 +311,22 @@
     }
 
     .modal {
-       position: relative;
-  z-index: 1001;
+        width: 420px;
+  max-width: 90vw; /* NEW */
+  max-height: 90vh;
+  overflow-y: auto;
 }
 }
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
-  width: 420px;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   gap: 16px;
 
   /* NEW FIXES */
-  max-height: 90vh;
-  overflow-y: auto;
 }
 
     .modal-title {
