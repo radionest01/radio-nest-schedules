@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Activate Licence</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Activate Your Licence</h2>
+
+  <input type="text" id="licenceKey" placeholder="Enter your licence key">
+
+  <button onclick="activateKey()">Activate</button>
+
+  <p id="error"></p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase.js"></script>
+<script src="auth.js"></script>
+
+</body>
+</html>
