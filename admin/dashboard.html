@@ -1,333 +1,337 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Radio Nest Dashboard</title>
-  <link rel="stylesheet" href="dashboard.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Nest Dashboard</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0f0f0f;
+            color: white;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar h2 {
+            font-size: 22px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .sidebar button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 12px 0;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: 0.2s;
+        }
+
+        .sidebar button:hover {
+            opacity: 1;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .header {
+            font-size: 26px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Schedule Grid */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 12px;
+        }
+
+        .day-column {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 15px;
+            border-radius: 10px;
+            min-height: 200px;
+        }
+
+        .day-column h3 {
+            margin-top: 0;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .show-card {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .show-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Add Show Button */
+        .add-show-btn {
+            margin-top: 20px;
+            padding: 12px 18px;
+            background: #ff7b00;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .add-show-btn:hover {
+            background: #ff8f26;
+        }
+
+        /* Modal */
+        .modal-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal {
+            background: #1a1a1a;
+            padding: 25px;
+            border-radius: 12px;
+            width: 420px;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            font-size: 22px;
+        }
+
+        .modal input, .modal select, .modal textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: none;
+            background: rgba(255,255,255,0.08);
+            color: white;
+        }
+
+        .modal button {
+            width: 100%;
+            padding: 12px;
+            background: #ff7b00;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            color: white;
+            font-weight: 600;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="app-shell">
-
-  <!-- SIDEBAR -->
-  <div id="sidebar">
-
-    <div class="sidebar-logo">
-      <img src="assets/rn logo(1).png" class="sidebar-logo-img">
-      <span class="sidebar-logo-text">Radio Nest</span>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Radio Nest</h2>
+        <button>Dashboard</button>
+        <button>Hosts</button>
+        <button>Branding</button>
+        <button>Embed</button>
+        <button>Account</button>
     </div>
 
-    <div class="sidebar-nav">
-      <div class="nav-item active" onclick="showTab('schedule')">
-        <div class="nav-item-icon">📅</div>
-        Schedule
-      </div>
+    <!-- Main -->
+    <div class="main">
+        <div class="header">Schedule</div>
 
-      <div class="nav-item" onclick="showTab('hosts')">
-        <div class="nav-item-icon">🎙️</div>
-        Hosts
-      </div>
+        <button class="add-show-btn" onclick="openModal()">Add Show</button>
 
-      <div class="nav-item" onclick="showTab('branding')">
-        <div class="nav-item-icon">🎨</div>
-        Branding
-      </div>
-
-      <div class="nav-item" onclick="showTab('embed')">
-        <div class="nav-item-icon">🔗</div>
-        Embed Code
-      </div>
-
-      <div class="nav-item" onclick="showTab('account')">
-        <div class="nav-item-icon">⚙️</div>
-        Account
-      </div>
+        <div class="schedule-grid" id="scheduleGrid"></div>
     </div>
 
-    <div class="sidebar-footer">
-      © Radio Nest
-    </div>
+    <!-- Modal -->
+    <div class="modal-bg" id="modalBg">
+        <div class="modal">
+            <h2>Add Show</h2>
 
-  </div>
+            <input id="showTitle" placeholder="Show Title">
 
-  <!-- MAIN AREA -->
-  <div id="main">
+            <select id="showDay">
+                <option value="0">Monday</option>
+                <option value="1">Tuesday</option>
+                <option value="2">Wednesday</option>
+                <option value="3">Thursday</option>
+                <option value="4">Friday</option>
+                <option value="5">Saturday</option>
+                <option value="6">Sunday</option>
+            </select>
 
-    <div class="topbar">
-      <div class="topbar-title">
-        <h1 id="pageTitle">Schedule</h1>
-        <span>Manage your station</span>
-      </div>
+            <input id="showStart" type="time">
+            <input id="showEnd" type="time">
 
-      <div class="topbar-actions">
-        <button id="logoutBtn" onclick="logout()">Logout</button>
-      </div>
-    </div>
+            <select id="hostSelect"></select>
 
-    <div id="content">
+            <textarea id="showDescription" placeholder="Description"></textarea>
 
-      <!-- SCHEDULE TAB -->
-      <div id="schedule" class="tabContent active">
-
-        <div class="content-shell">
-
-          <!-- LEFT: Weekly schedule -->
-          <div class="panel">
-            <div class="panel-header">
-              <span class="panel-title">Weekly Schedule</span>
-              <span class="panel-subtitle">Drag, edit and manage your shows</span>
-            </div>
-
-            <div class="schedule-toolbar">
-              <button class="btn-primary" onclick="openShowModal()">Add Show</button>
-              <span class="schedule-hint">All times in station local time.</span>
-            </div>
-
-            <div class="schedule-grid">
-              <div class="schedule-grid-header">
-                <div></div>
-                <div>Mon</div>
-                <div>Tue</div>
-                <div>Wed</div>
-                <div>Thu</div>
-                <div>Fri</div>
-                <div>Sat</div>
-                <div>Sun</div>
-              </div>
-
-              <div class="schedule-grid-body">
-                <div class="schedule-time-column">
-                  <span>00:00</span>
-                  <span>06:00</span>
-                  <span>12:00</span>
-                  <span>18:00</span>
-                </div>
-
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- RIGHT: Upcoming shows -->
-          <div class="panel">
-            <div class="panel-header">
-              <span class="panel-title">Upcoming Shows</span>
-              <span class="panel-subtitle">Next 7 days</span>
-            </div>
-
-            <ul class="simple-list" id="upcomingList">
-              <li>No shows scheduled yet.</li>
-            </ul>
-          </div>
-
+            <button onclick="saveShow()">Save Show</button>
         </div>
-
-      </div>
-
-      <!-- HOSTS TAB -->
-      <div id="hosts" class="tabContent">
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Hosts</span>
-            <span class="panel-subtitle">Manage your presenters</span>
-          </div>
-          <p class="placeholder">Host management will go here.</p>
-        </div>
-      </div>
-
-      <!-- BRANDING TAB -->
-      <div id="branding" class="tabContent">
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Branding</span>
-            <span class="panel-subtitle">Station identity</span>
-          </div>
-          <p class="placeholder">Branding settings will go here.</p>
-        </div>
-      </div>
-
-      <!-- EMBED TAB -->
-      <div id="embed" class="tabContent">
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Embed Code</span>
-            <span class="panel-subtitle">Add your player anywhere</span>
-          </div>
-          <p class="placeholder">Embed generator will go here.</p>
-        </div>
-      </div>
-
-      <!-- ACCOUNT TAB -->
-      <div id="account" class="tabContent">
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">Account</span>
-            <span class="panel-subtitle">Your details</span>
-          </div>
-          <p class="placeholder">Account details will go here.</p>
-        </div>
-      </div>
-
     </div>
 
-  </div>
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-</div>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_BUCKET",
+            messagingSenderId: "YOUR_SENDER",
+            appId: "YOUR_APP_ID"
+        };
 
-<!-- SHOW MODAL -->
-<div id="showModal" class="modal-backdrop" style="display:none;">
-  <div class="modal">
-    <h3>Add Show</h3>
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth();
+        const db = getFirestore();
 
-    <div class="form-group">
-      <label>Show Title</label>
-      <input type="text" id="showTitle" placeholder="e.g. Breakfast Show">
-    </div>
+        let stationID = null;
+        let uid = null;
 
-    <div class="form-group">
-      <label>Day of Week</label>
-      <select id="showDay">
-        <option value="0">Monday</option>
-        <option value="1">Tuesday</option>
-        <option value="2">Wednesday</option>
-        <option value="3">Thursday</option>
-        <option value="4">Friday</option>
-        <option value="5">Saturday</option>
-        <option value="6">Sunday</option>
-      </select>
-    </div>
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) return;
 
-    <div class="form-row">
-      <div class="form-group">
-        <label>Start Time</label>
-        <input type="time" id="showStart">
-      </div>
+            uid = user.uid;
 
-      <div class="form-group">
-        <label>End Time</label>
-        <input type="time" id="showEnd">
-      </div>
-    </div>
+            const userRef = doc(db, "users", uid);
+            const userSnap = await getDoc(userRef);
 
-    <div class="form-group">
-  <label>Host</label>
-  <select id="showHost">
-    <option value="">Select a host...</option>
-  </select>
-</div>
+            stationID = userSnap.data().stationID;
 
-    <div class="form-group">
-      <label>Description (optional)</label>
-      <textarea id="showDescription" placeholder="Short description of the show"></textarea>
-    </div>
+            loadHosts();
+            loadShows();
+        });
 
-    <div class="modal-actions">
-      <button class="btn-secondary" onclick="closeShowModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveShow()">Save Show</button>
-    </div>
-  </div>
-</div>
+        async function loadHosts() {
+            const hostSelect = document.getElementById("hostSelect");
+            hostSelect.innerHTML = "";
 
-<!-- JS -->
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+            const hostsRef = collection(db, "users", uid, "stations", stationID, "hosts");
+            const hostsSnap = await getDocs(hostsRef);
 
-<script src="firebase.js"></script>
-<script src="auth.js"></script>
+            hostsSnap.forEach(doc => {
+                const h = doc.data();
+                const opt = document.createElement("option");
+                opt.value = doc.id;
+                opt.textContent = h.name;
+                opt.dataset.image = h.imageUrl;
+                hostSelect.appendChild(opt);
+            });
+        }
 
-<script>
+        async function loadShows() {
+            const grid = document.getElementById("scheduleGrid");
+            grid.innerHTML = "";
 
-// TAB SWITCHING + SIDEBAR ACTIVE STATE + PAGE TITLE
-function showTab(tabName) {
+            const days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
-  // Hide all tabs
-  document.querySelectorAll('.tabContent').forEach(div => {
-    div.classList.remove('active');
-  });
+            for (let i = 0; i < 7; i++) {
+                const col = document.createElement("div");
+                col.className = "day-column";
+                col.innerHTML = `<h3>${days[i]}</h3>`;
+                grid.appendChild(col);
+            }
 
-  // Show selected tab
-  document.getElementById(tabName).classList.add('active');
+            const showsRef = collection(db, "users", uid, "stations", stationID, "shows");
+            const showsSnap = await getDocs(showsRef);
 
-  // Update page title
-  document.getElementById("pageTitle").innerText =
-    tabName.charAt(0).toUpperCase() + tabName.slice(1);
+            showsSnap.forEach(docSnap => {
+                const show = docSnap.data();
+                const card = document.createElement("div");
+                card.className = "show-card";
+                card.innerHTML = `
+                    <strong>${show.title}</strong><br>
+                    ${show.start} - ${show.end}<br>
+                    ${show.hostName}
+                `;
+                grid.children[show.day].appendChild(card);
+            });
+        }
 
-  // Update sidebar active state
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-  });
+        function openModal() {
+            document.getElementById("modalBg").style.display = "flex";
+        }
 
-  document.querySelector(`.nav-item[onclick="showTab('${tabName}')"]`)
-    .classList.add('active');
-}
+        function closeModal() {
+            document.getElementById("modalBg").style.display = "none";
+        }
 
-// MODAL HELPERS
-function openShowModal() {
-  document.getElementById('showModal').style.display = 'flex';
-}
+        async function saveShow() {
+            const title = document.getElementById("showTitle").value;
+            const day = parseInt(document.getElementById("showDay").value);
+            const start = document.getElementById("showStart").value;
+            const end = document.getElementById("showEnd").value;
+            const desc = document.getElementById("showDescription").value;
 
-function closeShowModal() {
-  document.getElementById('showModal').style.display = 'none';
-}
+            const hostSelect = document.getElementById("hostSelect");
+            const hostId = hostSelect.value;
+            const hostName = hostSelect.options[hostSelect.selectedIndex].textContent;
+            const hostImageUrl = hostSelect.options[hostSelect.selectedIndex].dataset.image;
 
-// SAVE SHOW (FORM ONLY FOR NOW)
-function saveShow() {
-  const title = document.getElementById("showTitle").value.trim();
-  const day = document.getElementById("showDay").value;
-  const start = document.getElementById("showStart").value;
-  const end = document.getElementById("showEnd").value;
-  const host = document.getElementById("showHost").value.trim();
-  const description = document.getElementById("showDescription").value.trim();
+            await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
+                title,
+                day,
+                start,
+                end,
+                description: desc,
+                hostId,
+                hostName,
+                hostImageUrl
+            });
 
-  if (!title || !start || !end || !host) {
-    alert("Please fill in all required fields.");
-    return;
-  }
-
-  console.log({
-    title,
-    day,
-    start,
-    end,
-    host,
-    description
-  });
-
-  closeShowModal();
-}
-
-// FIREBASE AUTH PROTECTION
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  db.collection("users").doc(user.uid).onSnapshot(doc => {
-    if (!doc.exists) {
-      window.location.href = "licence.html";
-      return;
-    }
-
-    const data = doc.data();
-    if (!data) return;
-
-    if (!data.firstLoginComplete) {
-      window.location.href = "licence.html";
-      return;
-    }
-
-    document.getElementById("content").style.display = "block";
-  });
-});
-
-</script>
+            closeModal();
+            loadShows();
+        }
+    </script>
 
 </body>
 </html>
