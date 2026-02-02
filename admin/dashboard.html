@@ -65,73 +65,71 @@
 
     <div id="content">
 
+      <!-- SCHEDULE TAB -->
       <div id="schedule" class="tabContent active">
 
-  <div class="content-shell">
+        <div class="content-shell">
 
-    <!-- LEFT: Weekly schedule -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">Weekly Schedule</span>
-        <span class="panel-subtitle">Drag, edit and manage your shows</span>
-      </div>
+          <!-- LEFT: Weekly schedule -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Weekly Schedule</span>
+              <span class="panel-subtitle">Drag, edit and manage your shows</span>
+            </div>
 
-      <div class="schedule-toolbar">
-        <button class="btn-primary" onclick="openShowModal()">Add Show</button>
-        <span class="schedule-hint">All times in station local time.</span>
-      </div>
+            <div class="schedule-toolbar">
+              <button class="btn-primary" onclick="openShowModal()">Add Show</button>
+              <span class="schedule-hint">All times in station local time.</span>
+            </div>
 
-      <div class="schedule-grid">
-        <div class="schedule-grid-header">
-          <div></div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
-          <div>Sun</div>
-        </div>
+            <div class="schedule-grid">
+              <div class="schedule-grid-header">
+                <div></div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+                <div>Sun</div>
+              </div>
 
-        <div class="schedule-grid-body">
-          <!-- Time labels -->
-          <div class="schedule-time-column">
-            <span>00:00</span>
-            <span>06:00</span>
-            <span>12:00</span>
-            <span>18:00</span>
+              <div class="schedule-grid-body">
+                <div class="schedule-time-column">
+                  <span>00:00</span>
+                  <span>06:00</span>
+                  <span>12:00</span>
+                  <span>18:00</span>
+                </div>
+
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+                <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+              </div>
+            </div>
           </div>
 
-          <!-- Placeholder columns for now -->
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
-          <div class="schedule-day-column"><span class="placeholder">No shows</span></div>
+          <!-- RIGHT: Upcoming shows -->
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title">Upcoming Shows</span>
+              <span class="panel-subtitle">Next 7 days</span>
+            </div>
+
+            <ul class="simple-list" id="upcomingList">
+              <li>No shows scheduled yet.</li>
+            </ul>
+          </div>
+
         </div>
-      </div>
-    </div>
 
-    <!-- RIGHT: Upcoming shows -->
-    <div class="panel">
-      <div class="panel-header">
-        <span class="panel-title">Upcoming Shows</span>
-        <span class="panel-subtitle">Next 7 days</span>
       </div>
 
-      <ul class="simple-list" id="upcomingList">
-        <li>No shows scheduled yet.</li>
-      </ul>
-    </div>
-
-  </div>
-
-</div>
-
-</div>
-
+      <!-- HOSTS TAB -->
       <div id="hosts" class="tabContent">
         <div class="panel">
           <div class="panel-header">
@@ -142,6 +140,7 @@
         </div>
       </div>
 
+      <!-- BRANDING TAB -->
       <div id="branding" class="tabContent">
         <div class="panel">
           <div class="panel-header">
@@ -152,6 +151,7 @@
         </div>
       </div>
 
+      <!-- EMBED TAB -->
       <div id="embed" class="tabContent">
         <div class="panel">
           <div class="panel-header">
@@ -162,6 +162,7 @@
         </div>
       </div>
 
+      <!-- ACCOUNT TAB -->
       <div id="account" class="tabContent">
         <div class="panel">
           <div class="panel-header">
@@ -178,6 +179,7 @@
 
 </div>
 
+<!-- SHOW MODAL -->
 <div id="showModal" class="modal-backdrop" style="display:none;">
   <div class="modal">
     <h3>Add Show</h3>
@@ -187,8 +189,77 @@
       <button class="btn-primary">Save Show</button>
     </div>
   </div>
-  
 </div>
-  
+
+<!-- JS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+<script src="firebase.js"></script>
+<script src="auth.js"></script>
+
+<script>
+
+// TAB SWITCHING + SIDEBAR ACTIVE STATE + PAGE TITLE
+function showTab(tabName) {
+
+  // Hide all tabs
+  document.querySelectorAll('.tabContent').forEach(div => {
+    div.classList.remove('active');
+  });
+
+  // Show selected tab
+  document.getElementById(tabName).classList.add('active');
+
+  // Update page title
+  document.getElementById("pageTitle").innerText =
+    tabName.charAt(0).toUpperCase() + tabName.slice(1);
+
+  // Update sidebar active state
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+  });
+
+  document.querySelector(`.nav-item[onclick="showTab('${tabName}')"]`)
+    .classList.add('active');
+}
+
+// MODAL HELPERS
+function openShowModal() {
+  document.getElementById('showModal').style.display = 'flex';
+}
+
+function closeShowModal() {
+  document.getElementById('showModal').style.display = 'none';
+}
+
+// FIREBASE AUTH PROTECTION
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  db.collection("users").doc(user.uid).onSnapshot(doc => {
+    if (!doc.exists) {
+      window.location.href = "licence.html";
+      return;
+    }
+
+    const data = doc.data();
+    if (!data) return;
+
+    if (!data.firstLoginComplete) {
+      window.location.href = "licence.html";
+      return;
+    }
+
+    document.getElementById("content").style.display = "block";
+  });
+});
+
+</script>
+
 </body>
 </html>
