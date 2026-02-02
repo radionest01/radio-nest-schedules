@@ -57,17 +57,11 @@
       margin-bottom: 28px;
     }
 
-    .logo-circle {
+    .logo-img {
       width: 32px;
       height: 32px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 0, #fed7aa 0, #fb923c 35%, #7c2d12 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 16px;
-      color: #111827;
+      border-radius: 50%;
+      object-fit: cover;
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
     }
 
@@ -628,7 +622,7 @@
   <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
-      <div class="logo-circle">RN</div>
+      <img src="assets/RN Updated Icon.png" class="logo-img" alt="Radio Nest Logo">
       <div class="sidebar-title">
         <span>Radio Nest</span>
         <span>Schedules</span>
@@ -857,7 +851,7 @@
 
     const daysLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-    // Modal controls (must be global)
+    // Modal controls (global)
     window.openModal = function () {
       document.getElementById("modalBackdrop").style.display = "flex";
     };
@@ -938,7 +932,6 @@
       const grid = document.getElementById("scheduleGrid");
       grid.innerHTML = "";
 
-      // Build columns
       const dayColumns = [];
       for (let i = 0; i < 7; i++) {
         const col = document.createElement("div");
@@ -1005,7 +998,6 @@
         }
       });
 
-      // Update counts + metrics
       let busiestDayIndex = null;
       let busiestCount = 0;
 
