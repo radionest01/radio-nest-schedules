@@ -15,6 +15,7 @@ body {
   box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   width: 320px;
   text-align: center;
+  box-sizing: border-box; /* added */
 }
 
 .login-container h2 {
@@ -24,11 +25,14 @@ body {
 
 .login-container input {
   width: 100%;
+  max-width: 100%;        /* added */
+  display: block;         /* added */
+  margin: 10px auto;      /* updated for perfect centring */
   padding: 12px;
-  margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 15px;
+  box-sizing: border-box; /* added */
 }
 
 .login-container button {
