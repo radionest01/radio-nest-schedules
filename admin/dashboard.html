@@ -6,90 +6,120 @@
 </head>
 <body>
 
-<div id="navbar">
-  <h2>Radio Nest</h2>
-  <button onclick="logout()">Logout</button>
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+
+    <div class="sidebar-logo">
+      <img src="assets/rn logo(1).png" class="sidebar-logo-img">
+      <span class="sidebar-logo-text">Radio Nest</span>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-item active" onclick="showTab('schedule')">
+        <div class="nav-item-icon">📅</div>
+        Schedule
+      </div>
+
+      <div class="nav-item" onclick="showTab('hosts')">
+        <div class="nav-item-icon">🎙️</div>
+        Hosts
+      </div>
+
+      <div class="nav-item" onclick="showTab('branding')">
+        <div class="nav-item-icon">🎨</div>
+        Branding
+      </div>
+
+      <div class="nav-item" onclick="showTab('embed')">
+        <div class="nav-item-icon">🔗</div>
+        Embed Code
+      </div>
+
+      <div class="nav-item" onclick="showTab('account')">
+        <div class="nav-item-icon">⚙️</div>
+        Account
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      © Radio Nest
+    </div>
+
+  </div>
+
+  <!-- MAIN AREA -->
+  <div id="main">
+
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1 id="pageTitle">Schedule</h1>
+        <span>Manage your station</span>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="logoutBtn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div id="content">
+
+      <div id="schedule" class="tabContent active">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Schedule</span>
+            <span class="panel-subtitle">Your weekly programming</span>
+          </div>
+          <p class="placeholder">Schedule editor will go here.</p>
+        </div>
+      </div>
+
+      <div id="hosts" class="tabContent">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Hosts</span>
+            <span class="panel-subtitle">Manage your presenters</span>
+          </div>
+          <p class="placeholder">Host management will go here.</p>
+        </div>
+      </div>
+
+      <div id="branding" class="tabContent">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Branding</span>
+            <span class="panel-subtitle">Station identity</span>
+          </div>
+          <p class="placeholder">Branding settings will go here.</p>
+        </div>
+      </div>
+
+      <div id="embed" class="tabContent">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Embed Code</span>
+            <span class="panel-subtitle">Add your player anywhere</span>
+          </div>
+          <p class="placeholder">Embed generator will go here.</p>
+        </div>
+      </div>
+
+      <div id="account" class="tabContent">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Account</span>
+            <span class="panel-subtitle">Your details</span>
+          </div>
+          <p class="placeholder">Account details will go here.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
-
-<div id="tabs">
-  <button class="tab" onclick="showTab('schedule')">Schedule</button>
-  <button class="tab" onclick="showTab('hosts')">Hosts</button>
-  <button class="tab" onclick="showTab('branding')">Branding</button>
-  <button class="tab" onclick="showTab('embed')">Embed Code</button>
-  <button class="tab" onclick="showTab('account')">Account</button>
-</div>
-
-<!-- CONTENT HIDDEN UNTIL USER IS VERIFIED -->
-<div id="content" style="display:none;">
-
-  <div id="schedule" class="tabContent">
-    <h3>Schedule</h3>
-    <p>Schedule editor will go here.</p>
-  </div>
-
-  <div id="hosts" class="tabContent" style="display:none;">
-    <h3>Hosts</h3>
-    <p>Host management will go here.</p>
-  </div>
-
-  <div id="branding" class="tabContent" style="display:none;">
-    <h3>Branding</h3>
-    <p>Branding settings will go here.</p>
-  </div>
-
-  <div id="embed" class="tabContent" style="display:none;">
-    <h3>Embed Code</h3>
-    <p>Embed generator will go here.</p>
-  </div>
-
-  <div id="account" class="tabContent" style="display:none;">
-    <h3>Account</h3>
-    <p>Account details will go here.</p>
-  </div>
-
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script src="firebase.js"></script>
-<script src="auth.js"></script>
-
-<script>
-// Tab switching
-function showTab(tabName) {
-  document.querySelectorAll('.tabContent').forEach(div => div.style.display = 'none');
-  document.getElementById(tabName).style.display = 'block';
-}
-
-// PROTECT DASHBOARD (FIXED)
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "login.html";
-    return;
-  }
-
-  // Wait for Firestore to load the user document
-  db.collection("users").doc(user.uid).onSnapshot(doc => {
-    if (!doc.exists) {
-      window.location.href = "licence.html";
-      return;
-    }
-
-    const data = doc.data();
-    if (!data) return; // prevents early redirect
-
-    if (!data.firstLoginComplete) {
-      window.location.href = "licence.html";
-      return;
-    }
-
-    // User is activated — show dashboard
-    document.getElementById("content").style.display = "block";
-  });
-});
-</script>
 
 </body>
 </html>
