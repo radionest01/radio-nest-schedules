@@ -1,64 +1,57 @@
 body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
-  background: #0d0d0d;
-  color: #fff;
+  font-family: Arial, sans-serif;
+  background: #f5f7fa;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin: 0;
 }
 
 .licence-container {
-  width: 350px;
-  background: #111;
+  background: white;
   padding: 30px;
-  border-radius: 12px;
-  border: 1px solid #222;
-  box-shadow: 0 0 25px rgba(0,0,0,0.4);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  width: 320px;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .licence-container h2 {
-  margin: 0 0 20px;
-  font-size: 22px;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 
 .licence-container input {
   width: 100%;
+  max-width: 100%;
+  display: block;
+  margin: 10px auto;
   padding: 12px;
-  margin-bottom: 18px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  background: #1a1a1a;
-  color: #fff;
-  font-size: 14px;
-}
-
-.licence-container input::placeholder {
-  color: #777;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  box-sizing: border-box;
 }
 
 .licence-container button {
   width: 100%;
   padding: 12px;
-  border-radius: 8px;
+  background: #0078ff;
+  color: white;
   border: none;
-  background: #ff6a00;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
-  transition: 0.2s ease;
+  margin-top: 10px;
 }
 
 .licence-container button:hover {
-  background: #ff7a1a;
+  background: #005fcc;
 }
 
 #error {
-  margin-top: 12px;
-  font-size: 13px;
-  color: #ff6a00;
+  color: red;
+  margin-top: 10px;
 }
