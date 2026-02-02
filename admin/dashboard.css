@@ -1,82 +1,286 @@
+:root {
+  --rn-bg: #050509;
+  --rn-surface: rgba(18, 18, 24, 0.96);
+  --rn-border: rgba(255, 255, 255, 0.06);
+  --rn-accent: #ff6a00;
+  --rn-accent-soft: rgba(255, 106, 0, 0.18);
+  --rn-text-main: #f7f7f9;
+  --rn-text-muted: #9b9ba6;
+  --rn-radius-lg: 14px;
+  --rn-radius-md: 10px;
+  --rn-shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.65);
+}
+
 /* Global */
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
-  background: #0f0f0f;
-  color: #fff;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+  background: radial-gradient(circle at top left, #1b0f07 0, #050509 45%, #020208 100%);
+  color: var(--rn-text-main);
 }
 
-/* Navbar */
-#navbar {
+/* Layout */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #0b0b10 0%, #050509 100%);
+  border-right: 1px solid var(--rn-border);
+  padding: 18px 16px;
+  box-shadow: 8px 0 30px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Logo block */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px 2px;
+}
+
+/* Your actual logo image */
+.sidebar-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Logo text */
+.sidebar-logo-text {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 15px;
+}
+
+/* Nav */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nav-section-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rn-text-muted);
+  padding: 0 8px 4px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  color: var(--rn-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: 0.18s ease;
+}
+
+.nav-item-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+}
+
+.nav-item.active {
+  background: var(--rn-accent-soft);
+  border-color: var(--rn-accent);
+  color: #ffffff;
+  box-shadow: 0 0 0 1px rgba(255, 106, 0, 0.3);
+}
+
+.nav-item.active .nav-item-icon {
+  background: var(--rn-accent);
+  box-shadow: 0 0 12px rgba(255, 106, 0, 0.7);
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 8px 8px 0;
+  font-size: 11px;
+  color: var(--rn-text-muted);
+  opacity: 0.8;
+}
+
+/* Main area */
+#main {
+  flex: 1;
+  padding: 22px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Top bar */
+.topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 25px;
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
 }
 
-#navbar h2 {
+.topbar-title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.topbar-title h1 {
   margin: 0;
+  font-size: 20px;
   font-weight: 600;
 }
 
-#navbar button {
-  background: #ff4747;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
+.topbar-title span {
+  font-size: 13px;
+  color: var(--rn-text-muted);
 }
 
-#navbar button:hover {
-  background: #ff2e2e;
-}
-
-/* Tabs */
-#tabs {
+.topbar-actions {
   display: flex;
+  align-items: center;
   gap: 10px;
-  padding: 15px 25px;
-  background: #141414;
-  border-bottom: 1px solid #222;
 }
 
-.tab {
-  background: #1f1f1f;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  color: #ccc;
+.badge-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(255, 106, 0, 0.12);
+  border: 1px solid rgba(255, 106, 0, 0.5);
+  font-size: 11px;
+  color: #ffd9b3;
+}
+
+.badge-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: #ff6a00;
+  box-shadow: 0 0 10px rgba(255, 106, 0, 0.9);
+}
+
+#logoutBtn {
+  background: transparent;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 7px 14px;
+  color: var(--rn-text-main);
+  font-size: 13px;
   cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.18s ease;
 }
 
-.tab:hover {
-  background: #2a2a2a;
-  color: #fff;
+#logoutBtn:hover {
+  border-color: rgba(255, 106, 0, 0.8);
+  background: rgba(255, 106, 0, 0.12);
 }
 
-.tab.active {
-  background: #007bff;
-  color: #fff;
-}
-
-/* Content */
+/* Content wrapper */
 #content {
-  padding: 25px;
   display: none;
+  flex: 1;
 }
 
+.content-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+/* Panels */
+.panel {
+  background: var(--rn-surface);
+  border-radius: var(--rn-radius-lg);
+  border: 1px solid var(--rn-border);
+  box-shadow: var(--rn-shadow-soft);
+  padding: 18px 18px 16px;
+  backdrop-filter: blur(18px);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.panel-title {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.panel-subtitle {
+  font-size: 12px;
+  color: var(--rn-text-muted);
+}
+
+.chip {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--rn-text-muted);
+}
+
+/* Tab content */
 .tabContent {
-  animation: fadeIn 0.25s ease-in-out;
+  display: none;
+  animation: fadeIn 0.22s ease-out;
+}
+
+.tabContent.active {
+  display: block;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
+  from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Placeholder content styling */
+.placeholder {
+  font-size: 13px;
+  color: var(--rn-text-muted);
+  line-height: 1.6;
+}
+
+/* Simple list style */
+.simple-list {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  color: var(--rn-text-muted);
+}
+
+.simple-list li {
+  padding: 4px 0;
 }
