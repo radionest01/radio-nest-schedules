@@ -485,8 +485,9 @@ body.light .modal {
   transform: translateY(1px); /* perfect vertical alignment */
 }
 
+.day-checkboxes label {
+  line-height: 1; /* forces the label to shrink to checkbox height */
+}
 .day-checkboxes input[type="checkbox"] {
-  margin: 0;
-  position: relative;
-  top: 5px; /* nudges checkbox down to align perfectly */
+  vertical-align: middle;
 }
