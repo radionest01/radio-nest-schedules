@@ -484,3 +484,9 @@ body.light .modal {
   margin: 0; /* removes browser default offset */
   transform: translateY(1px); /* perfect vertical alignment */
 }
+
+.day-checkboxes input[type="checkbox"] {
+  margin: 0;
+  position: relative;
+  top: 2px; /* nudges checkbox down to align perfectly */
+}
