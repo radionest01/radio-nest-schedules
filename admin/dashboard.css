@@ -464,9 +464,13 @@ body.light .modal {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.day-option {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  line-height: 1;
+.form-group .day-option {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+}
+
+.form-group .day-option input[type="checkbox"] {
+  margin: 0 !important;
 }
