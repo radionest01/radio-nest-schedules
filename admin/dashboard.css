@@ -488,5 +488,5 @@ body.light .modal {
 .day-checkboxes input[type="checkbox"] {
   margin: 0;
   position: relative;
-  top: 2px; /* nudges checkbox down to align perfectly */
+  top: 5px; /* nudges checkbox down to align perfectly */
 }
