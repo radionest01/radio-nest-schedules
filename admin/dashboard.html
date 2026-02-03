@@ -678,17 +678,45 @@
   /* ----------------------------------------------------------
      HOST IMAGE UPLOAD (BASE64)
   ---------------------------------------------------------- */
-  document.getElementById("hostImageInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  document.getElementById("hostImageInput").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      hostImageBase64 = ev.target.result;
-      document.getElementById("hostImagePreview").src = hostImageBase64;
-    };
-    reader.readAsDataURL(file);
-  });
+  const img = new Image();
+  const reader = new FileReader();
+
+  reader.onload = (ev) => {
+    img.src = ev.target.result;
+  };
+
+  img.onload = () => {
+    const MAX_WIDTH = 600;
+    const MAX_HEIGHT = 600;
+
+    let width = img.width;
+    let height = img.height;
+
+    if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+      const scale = Math.min(MAX_WIDTH / width, MAX_HEIGHT / height);
+      width = width * scale;
+      height = height * scale;
+    }
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    const compressed = canvas.toDataURL("image/jpeg", 0.8);
+
+    hostImageBase64 = compressed;
+    document.getElementById("hostImagePreview").src = compressed;
+  };
+
+  reader.readAsDataURL(file);
+});
 
   /* ----------------------------------------------------------
      SAVE HOST
