@@ -464,32 +464,9 @@ body.light .modal {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.day-checkboxes {
+.day-option {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin: 8px 0;
-}
-
-.day-checkboxes label {
-  display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
-  cursor: pointer;
-  line-height: 1; /* prevents vertical misalignment */
-}
-
-.form-group .day-checkboxes label {
-  display: inline-flex !important;
-  align-items: center !important;
-  line-height: 1 !important;
-}
-
-.form-group .day-checkboxes input[type="checkbox"] {
-  margin: 0 !important;
-  vertical-align: middle !important;
-  position: relative !important;
-  top: 1px !important;
-}
+  line-height: 1;
 }
