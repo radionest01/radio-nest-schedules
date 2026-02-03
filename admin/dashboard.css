@@ -480,15 +480,16 @@ body.light .modal {
   line-height: 1; /* prevents vertical misalignment */
 }
 
-.day-checkboxes label {
+.form-group .day-checkboxes label {
   display: inline-flex !important;
   align-items: center !important;
   line-height: 1 !important;
 }
 
-.day-checkboxes input[type="checkbox"] {
+.form-group .day-checkboxes input[type="checkbox"] {
   margin: 0 !important;
   vertical-align: middle !important;
   position: relative !important;
-  top: 2px !important;
+  top: 1px !important;
+}
 }
