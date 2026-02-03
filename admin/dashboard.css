@@ -362,13 +362,23 @@ body {
   z-index: 50;
 }
 
+/* Modal (DARK MODE) — fully opaque */
 .modal {
-  background: var(--rn-surface);
+  background: #0d0d12; /* solid dark surface */
   border-radius: var(--rn-radius-lg);
   border: 1px solid var(--rn-border);
   box-shadow: var(--rn-shadow-soft);
   padding: 18px 20px 16px;
   width: 360px;
+
+  /* Remove transparency effects */
+  backdrop-filter: none;
+}
+
+/* Modal (LIGHT MODE) — fully opaque */
+body.light .modal {
+  background: #ffffff; /* solid white */
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .modal h3 {
@@ -435,12 +445,21 @@ body {
   gap: 12px;
 }
 
+/* Modal (DARK MODE) — fully opaque */
 .modal {
-  background: var(--rn-surface);
+  background: #0d0d12; /* solid dark surface */
   border-radius: var(--rn-radius-lg);
   border: 1px solid var(--rn-border);
   box-shadow: var(--rn-shadow-soft);
   padding: 18px 20px 16px;
   width: 360px;
-  backdrop-filter: blur(18px);
+
+  /* Remove transparency effects */
+  backdrop-filter: none;
+}
+
+/* Modal (LIGHT MODE) — fully opaque */
+body.light .modal {
+  background: #ffffff; /* solid white */
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
