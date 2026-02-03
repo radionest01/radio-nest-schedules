@@ -480,14 +480,15 @@ body.light .modal {
   line-height: 1; /* prevents vertical misalignment */
 }
 
-.day-checkboxes input[type="checkbox"] {
-  margin: 0; /* removes browser default offset */
-  transform: translateY(1px); /* perfect vertical alignment */
+.day-checkboxes label {
+  display: inline-flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
 }
 
-.day-checkboxes label {
-  line-height: 1; /* forces the label to shrink to checkbox height */
-}
 .day-checkboxes input[type="checkbox"] {
-  vertical-align: middle;
+  margin: 0 !important;
+  vertical-align: middle !important;
+  position: relative !important;
+  top: 2px !important;
 }
