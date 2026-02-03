@@ -222,7 +222,7 @@ body {
   border: 1px solid var(--rn-border);
   box-shadow: var(--rn-shadow-soft);
   padding: 18px 18px 16px;
-  backdrop-filter: blur(18px);
+  backdrop-filter: none; /* remove blur */
 }
 
 .panel-header {
