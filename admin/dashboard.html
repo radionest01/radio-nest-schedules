@@ -767,34 +767,41 @@
   /* ----------------------------------------------------------
      SAVE SHOW
   ---------------------------------------------------------- */
-  window.saveShow = async () => {
-    if (!uid || !stationID) return;
+window.saveShow = async () => {
+  if (!uid || !stationID) return;
 
-    const title = document.getElementById("showTitle").value.trim();
-    const start = document.getElementById("showStart").value;
-    const end = document.getElementById("showEnd").value;
-    const hostId = document.getElementById("hostSelect").value;
+  const title = document.getElementById("showTitle").value.trim();
+  const start = document.getElementById("showStart").value;
+  const end = document.getElementById("showEnd").value;
+  const hostId = document.getElementById("hostSelect").value;
 
-    if (!title || !start || !end || !hostId) {
-      return alert("Please fill in all fields.");
-    }
+  if (!title || !start || !end || !hostId) {
+    return alert("Please fill in all fields.");
+  }
 
-    const hostOption = document.getElementById("hostSelect").selectedOptions[0];
+  const hostOption = document.getElementById("hostSelect").selectedOptions[0];
 
-    await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
-      title,
-      day: parseInt(document.getElementById("showDay").value, 10),
-      start,
-      end,
-      description: document.getElementById("showDescription").value.trim(),
-      hostId,
-      hostName: hostOption.textContent,
-      hostImageUrl: hostOption.dataset.image || ""
-    });
+  // ✅ NEW: collect multiple days
+  const dayCheckboxes = document.querySelectorAll(".day-checkboxes input[type='checkbox']");
+  const days = [];
+  dayCheckboxes.forEach(cb => {
+    if (cb.checked) days.push(parseInt(cb.value));
+  });
 
-    closeShowModal();
-    loadShows();
-  };
+  await addDoc(collection(db, "users", uid, "stations", stationID, "shows"), {
+    title,
+    days, // ✅ save multi-day array
+    start,
+    end,
+    description: document.getElementById("showDescription").value.trim(),
+    hostId,
+    hostName: hostOption.textContent,
+    hostImageUrl: hostOption.dataset.image || ""
+  });
+
+  document.getElementById("showModalBackdrop").style.display = "none";
+  loadShows();
+};
 
   /* ----------------------------------------------------------
      LOAD HOSTS
